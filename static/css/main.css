@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+:root {
+    --map-height: 60vw;
+    --map-max-height: 90vh;
+    --row-pad: 5px;
+}
+
+/* bootstrap overrides */
+
+
+
+
+/* end bootstrap overrides */
+
+body {
+    background-color: white;
+}
+
+#map {
+    height:var(--map-height);
+    max-height: var(--map-max-height);
+    width:100%;
+    border:1px solid grey;
+}
+
+/* <map> */
+
+#map .leaflet-div-icon {
+    height: fit-content !important;
+    width: fit-content !important;
+    margin: 0 !important;
+    background: none;
+    border:none;
+}
+
+#map .waypoint-marker {
+}
+
+.waypoint-marker .waypoint-icon, .waypoint-marker .waypoint-label {
+}
+
+#map .waypoint-icon {
+    position: absolute;
+    border-radius: 50%;
+    width:12px;
+    height:12px;
+    top:-6px;
+    left:-6px;
+    padding:2px;
+    border: 2px solid white;
+}
+
+.waypoint-marker:hover .waypoint-icon, .waypoint-marker.selected .waypoint-icon {
+    width:14px !important;
+    height:14px !important;
+    top:-7px !important;
+    left:-7px !important;
+    padding: 0px !important;
+}
+
+#map .waypoint-label {
+    position: absolute;
+    top:5px;
+    left:5px;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+}
+
+.waypoint-marker:hover .waypoint-label, .waypoint-marker.selected .waypoint-label{
+    font-weight: bold;
+}
+
+
+/* </map> */
+
+#side-menu {
+    height: var(--map-height);
+    max-height: var(--map-max-height);
+    background-color: gainsboro;
+    overflow-y: scroll;
+}
+
+#group-list {
+    max-height:60%;
+    padding-left:0px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#group-list, .edit-form {
+    background-color: #fff;
+}
+
+.edit-form {
+    padding: var(--row-pad);
+    margin: 0;
+}
+
+.group-list-item {
+    list-style: none;
+}
+
+.waypoint-list {
+    padding-left:0;
+}
+
+.waypoint-row {
+    margin:0;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.handle {
+    cursor: grab !important;
+}
+
+.ghost {
+    background-color: lightgrey;
+    opacity: 0.5;
+    font-size: 0%;
+}
+
+.waypoint-row.selected, .group-row.selected {
+    background-color:cornflowerblue;
+}
+
+.group-row {
+    list-style: none;
+    border-top: 1px solid gainsboro;
+}
+
+#waypoint-input {
+    min-height: 30vh;
+}

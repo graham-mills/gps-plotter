@@ -1,0 +1,4 @@
+node_modules/
+.vscode/
+static/js/dist/**/*
+!static/js/dist/bundle.js

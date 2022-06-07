@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./static/js/dist",
+    "allowJs": true,
+    "target": "es5",
+    "strict": true,
+    "module": "commonjs",
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": "./static/js/src",
+  },
+  "include": ["./static/js/src/**/*"]
+}
