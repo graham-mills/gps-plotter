@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import url("node_modules/leaflet/dist/leaflet.css");
+@import url("node_modules/bootstrap/dist/css/bootstrap.min.css");
 
 :root {
     --map-height: 60vw;
@@ -32,12 +34,6 @@ body {
     margin: 0 !important;
     background: none;
     border:none;
-}
-
-#map .waypoint-marker {
-}
-
-.waypoint-marker .waypoint-icon, .waypoint-marker .waypoint-label {
 }
 
 #map .waypoint-icon {

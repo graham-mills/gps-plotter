@@ -1,27 +1,30 @@
-SHELL := /bin/bash
-.PHONY : clean
-
+BIN = node_modules/.bin
+	
+.PHONY: install
 install:
 	npm install
 
+.PHONY: clean
 clean:
-	rm -R ./static/js/dist/*
+	rm -Rf static/js/dist/*
 
+.PHONY: build
 build:
-	source .env
-	tsc --build --listEmittedFiles .
-	browserify --debug ./static/js/dist/app.js -o ./static/js/dist/bundle.js 
+	${BIN}/tsc --build --listEmittedFiles .
+	${BIN}/browserify --debug -t browserify-css ./static/js/dist/app.js > ./static/js/dist/bundle.js 
 
+.PHONY: minify
 minify:
-	uglifyjs ./static/js/dist/bundle.js -o ./static/js/dist/bundle.js
+	${BIN}/uglifyjs ./static/js/dist/bundle.js -o ./static/js/dist/bundle.js
 
+.PHONY: build-release
 build-release: clean build minify
 
+.PHONY: format
 format:
-	source .env
-	prettier --write index.html
-	prettier --write static/js/src
+	${BIN}/prettier --write index.html
+	${BIN}/prettier --write static/js/src
 
+.PHONY: serve
 serve:
-	source .env
-	live-server .
+	${BIN}/live-server .

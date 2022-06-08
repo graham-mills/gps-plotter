@@ -1,4 +1,5 @@
 require("bootstrap");
+require("../../css/app.css");
 import { LeafletMap } from "./map/leaflet_map";
 import { WaypointGroup } from "./model/waypoint_group";
 import { Waypoint } from "./model/waypoint";
