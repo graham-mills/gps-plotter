@@ -23,6 +23,16 @@ export class RemoveWaypointGroupEvent {
     constructor(public waypointGroupId: number) {}
 }
 
+/** Make waypoint group visible on map */
+export class ShowWaypointGroupEvent {
+    constructor(public waypointGroup: WaypointGroup) {}
+}
+
+/** Hide waypoint group from map */
+export class HideWaypointGroupEvent {
+    constructor(public waypointGroup: WaypointGroup) {}
+}
+
 /** Updates waypoint */
 export class UpdateWaypointEvent {
     constructor(public updatedWaypoint: Waypoint) {}
@@ -110,6 +120,8 @@ export type EventType =
     | RemoveWaypointEvent
     | AddWaypointGroupEvent
     | RemoveWaypointGroupEvent
+    | ShowWaypointGroupEvent
+    | HideWaypointGroupEvent
     | UpdateWaypointEvent
     | UpdateWaypointGroupEvent
     | WaypointUpdatedEvent
@@ -140,10 +152,6 @@ class EventPublisher<T extends EventType> {
         console.debug("[PUB][" + event.constructor.name + "] " + JSON.stringify(event));
         this.subscribers.forEach((cb) => cb(event));
     }
-}
-
-interface EventSuper {
-    name(): string;
 }
 
 export class EventBus {
@@ -182,6 +190,18 @@ export class EventBus {
         let pub = this.getPublisher<RemoveWaypointGroupEvent>(
             "RemoveWaypointGroupEvent"
         );
+        pub.subscribe(callback);
+    }
+    public subscribeToHideWaypointGroupEvent(
+        callback: Callback<HideWaypointGroupEvent>
+    ) {
+        let pub = this.getPublisher<HideWaypointGroupEvent>("HideWaypointGroupEvent");
+        pub.subscribe(callback);
+    }
+    public subscribeToShowWaypointGroupEvent(
+        callback: Callback<ShowWaypointGroupEvent>
+    ) {
+        let pub = this.getPublisher<ShowWaypointGroupEvent>("ShowWaypointGroupEvent");
         pub.subscribe(callback);
     }
     public subscribeToUpdateWaypointEvent(callback: Callback<UpdateWaypointEvent>) {

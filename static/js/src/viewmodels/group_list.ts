@@ -4,8 +4,10 @@ import { WaypointGroup } from "../model/waypoint_group";
 import * as ko from "knockout";
 import {
     EventBus,
+    HideWaypointGroupEvent,
     RemoveWaypointEvent,
     RemoveWaypointGroupEvent,
+    ShowWaypointGroupEvent,
     WaypointDeselectedEvent,
     WaypointGroupDeselectedEvent,
     WaypointGroupHtmlRenderedEvent,
@@ -52,9 +54,15 @@ export class GroupList {
         this.eventBus.publish(new WaypointGroupHtmlRenderedEvent(groupId));
     }
 
-    private hideWaypointGroup(groupId: number) {}
+    private hideWaypointGroup(groupId: number) {
+        const group = this.model.lookupGroupById(groupId)!;
+        this.eventBus.publish(new HideWaypointGroupEvent(group));
+    }
 
-    private showWaypointGroup(groupId: number) {}
+    private showWaypointGroup(groupId: number) {
+        const group = this.model.lookupGroupById(groupId)!;
+        this.eventBus.publish(new ShowWaypointGroupEvent(group));
+    }
 
     private deleteWaypoint(waypointId: number) {
         this.eventBus.publish(new RemoveWaypointEvent(waypointId));

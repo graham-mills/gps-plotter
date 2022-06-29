@@ -2,8 +2,10 @@ import {
     AddWaypointEvent,
     AddWaypointGroupEvent,
     EventBus,
+    HideWaypointGroupEvent,
     RemoveWaypointEvent,
     RemoveWaypointGroupEvent,
+    ShowWaypointGroupEvent,
     WaypointAddedEvent,
     WaypointDeselectedEvent,
     WaypointGroupAddedEvent,
@@ -48,6 +50,12 @@ export class MapManager {
         eventBus.subscribeToWaypointUpdatedEvent(this.handleWaypointUpdated.bind(this));
         eventBus.subscribeToWaypointGroupUpdatedEvent(
             this.handleWaypointGroupUpdated.bind(this)
+        );
+        eventBus.subscribeToHideWaypointGroupEvent(
+            this.handleHideWaypointGroup.bind(this)
+        );
+        eventBus.subscribeToShowWaypointGroupEvent(
+            this.handleShowWaypointGroup.bind(this)
         );
     }
 
@@ -113,5 +121,15 @@ export class MapManager {
     /** Redraws the polyline at normal thickness */
     private handleWaypointGroupDeselected(event: WaypointGroupDeselectedEvent) {
         this.map.waypointGroupDeselected(event.waypointGroup);
+    }
+
+    /** (Re)add waypoint group to map */
+    private handleShowWaypointGroup(event: ShowWaypointGroupEvent) {
+        this.map.addWaypointGroup(event.waypointGroup);
+    }
+
+    /** Remove waypoint group  map */
+    private handleHideWaypointGroup(event: HideWaypointGroupEvent) {
+        this.map.removeWaypointGroup(event.waypointGroup);
     }
 }

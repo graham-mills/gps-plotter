@@ -2,8 +2,10 @@ import {
     AddWaypointEvent,
     AddWaypointGroupEvent,
     EventBus,
+    HideWaypointGroupEvent,
     RemoveWaypointEvent,
     RemoveWaypointGroupEvent,
+    ShowWaypointGroupEvent,
     UpdateWaypointEvent,
     UpdateWaypointGroupEvent,
     WaypointAddedEvent,
@@ -52,6 +54,12 @@ export class ModelManager {
         eventBus.subscribeToUpdateWaypointEvent(this.handleUpdateWaypoint.bind(this));
         eventBus.subscribeToUpdateWaypointGroupEvent(
             this.handleUpdateWaypointGroup.bind(this)
+        );
+        eventBus.subscribeToShowWaypointGroupEvent(
+            this.handleShowWaypointGroup.bind(this)
+        );
+        eventBus.subscribeToHideWaypointGroupEvent(
+            this.handleHideWaypointGroup.bind(this)
         );
     }
 
@@ -122,5 +130,15 @@ export class ModelManager {
         group.visible(event.updatedGroup.visible());
         group.collapsed(event.updatedGroup.collapsed());
         this.eventBus.publish(new WaypointGroupUpdatedEvent(group));
+    }
+
+    /** Updates group's visible flag to true */
+    private handleShowWaypointGroup(event: ShowWaypointGroupEvent) {
+        event.waypointGroup.visible(true);
+    }
+
+    /** Updates group's visible flag to false */
+    private handleHideWaypointGroup(event: HideWaypointGroupEvent) {
+        event.waypointGroup.visible(false);
     }
 }
