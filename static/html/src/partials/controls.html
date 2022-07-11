@@ -1,0 +1,41 @@
+<div id="controls" class="row mb-1">
+  <div class="col btn-group">
+    <button
+      type="button"
+      class="btn btn-sm btn-primary shadow-none"
+      title="Add new waypoint group"
+      data-bind="click: $root.addEmptyGroup"
+    >
+      <i class="fa-solid fa-vector-square"></i>
+      Add Group
+    </button>
+    <button
+      type="button"
+      class="btn btn-sm btn-primary shadow-none"
+      title="Import waypoints from CSV"
+      data-bs-toggle="modal"
+      data-bs-target="#import-modal"
+    >
+      <i class="fa-solid fa-file-csv"></i>
+      Import (CSV)
+    </button>
+    <button
+      type="button"
+      class="btn btn-sm btn-primary shadow-none"
+      title="Export waypoints as CSV"
+    >
+      <i class="fa-solid fa-clipboard"></i>
+      Export (CSV)
+    </button>
+    <button
+      type="button"
+      class="btn btn-sm btn-danger shadow-none"
+      title="Remove all waypoints and waypoint groups"
+      data-bs-toggle="modal"
+      data-bs-target="#reset-modal"
+    >
+      <i class="fa-solid fa-trash-can"></i>
+      Delete All
+    </button>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<ul
+  id="group-list"
+  class="mb-1"
+  data-bind="foreach: { data: $root.model.waypointGroups, as: 'group'}"
+>
+  <li
+    class="group-list-item"
+    data-bind="childrenComplete: $root.waypointGroupHtmlRendered(group.id) "
+  >
+    <group-row></group-row>
+    <waypoint-list></waypoint-list>
+  </li>
+</ul>

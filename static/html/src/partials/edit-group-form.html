@@ -1,0 +1,49 @@
+<div id="edit-group-form" data-bind="if: $root.showForm">
+  <div class="edit-form row mb-1">
+    <div class="col">
+      <div class="mb-3">
+        <h5>
+          <i class="fa-solid fa-vector-square"></i>
+          <span data-bind="text: $root.source.name"></span>
+        </h5>
+      </div>
+      <div class="input-group input-group-sm mb-2">
+        <span class="input-group-text">Name</span>
+        <input type="text" class="form-control" data-bind="value: $root.name" />
+      </div>
+      <div class="input-group input-group-sm mb-2">
+        <span class="input-group-text">Draw Polyline</span>
+        <div class="form-control">
+          <input type="checkbox" class="form-check-input" data-bind="checked: $root.drawPolyline" />
+        </div>
+      </div>
+      <div class="input-group input-group-sm mb-2">
+        <span class="input-group-text">Show Markers</span>
+        <div class="form-control">
+          <input type="checkbox" class="form-check-input" data-bind="checked: $root.showMarkers" />
+        </div>
+      </div>
+      <div class="input-group input-group-sm mb-3">
+        <label class="input-group-text">Polyline Color</label>
+        <input
+          type="color"
+          class="form-control form-control-color"
+          value="#ff0000"
+          title="Choose your color"
+          data-bind="value: $root.lineColor"
+        />
+      </div>
+      <div class="mb-2">
+        <button type="submit" class="btn btn-sm btn-primary" data-bind="click: submitForm">
+          Save
+        </button>
+        <button type="submit" class="btn btn-sm btn-secondary" data-bind="click: $root.resetForm">
+          Reset
+        </button>
+        <button type="submit" class="btn btn-sm btn-secondary" data-bind="click: $root.resetForm">
+          Add Waypoint
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

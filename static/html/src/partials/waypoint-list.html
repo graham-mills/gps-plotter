@@ -1,0 +1,34 @@
+<ul
+  class="waypoint-list"
+  data-bind="foreach: { data: group.waypoints, as: 'waypoint'}, attr: {'id': 'waypoint-list-' + group.id}, hidden: group.collapsed"
+>
+  <li
+    class="waypoint-row row"
+    data-bind="click: function() { $root.selectWaypointById(waypoint.id); }, css: { selected: waypoint.selected }"
+  >
+    <!-- Spacer -->
+    <div class="col"></div>
+    <!-- Drag Handle -->
+    <div class="col">
+      <i class="btn btn-sm fa-solid fa-grip-lines handle" title="Re-order"></i>
+    </div>
+    <!-- Name, Position -->
+    <div class="col-sm-9">
+      <div class="row">
+        <span class="col-4" data-bind="text: waypoint.name"></span>
+        <span class="col-8" data-bind="text: waypoint.position().toString()"></span>
+      </div>
+    </div>
+    <!-- Delete button -->
+    <div class="col">
+      <button
+        type="button"
+        class="btn btn-sm shadow-none"
+        title="Delete waypoint"
+        data-bind="click: function() { $root.deleteWaypoint(waypoint.id); }, clickBubble: false"
+      >
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
+    </div>
+  </li>
+</ul>

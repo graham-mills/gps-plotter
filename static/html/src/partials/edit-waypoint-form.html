@@ -1,0 +1,32 @@
+<div id="edit-waypoint-form" data-bind="if: $root.showForm">
+  <div class="edit-form row mb-1">
+    <div class="col">
+      <div class="mb-3">
+        <h5>
+          <i class="fa-solid fa-location-dot"></i>
+          <span data-bind="text: $root.source.name"></span>
+        </h5>
+      </div>
+      <div class="input-group input-group-sm mb-2">
+        <span class="input-group-text">Name</span>
+        <input type="text" class="form-control" data-bind="value: $root.name" />
+      </div>
+      <div class="input-group input-group-sm mb-2">
+        <span class="input-group-text">Latitude</span>
+        <input type="text" class="form-control" data-bind="value: $root.latitude" />
+      </div>
+      <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text">Longitude</span>
+        <input type="text" class="form-control" data-bind="value: $root.longitude" />
+      </div>
+      <div class="mb-2">
+        <button type="submit" class="btn btn-sm btn-primary" data-bind="click: $root.submitForm">
+          Save
+        </button>
+        <button type="submit" class="btn btn-sm btn-secondary" data-bind="click: $root.resetForm">
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
