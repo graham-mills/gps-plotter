@@ -61,6 +61,7 @@ body {
     left:5px;
     color: black;
     text-shadow: 1px 1px 2px white;
+    white-space: nowrap;
 }
 
 .waypoint-marker:hover .waypoint-label, .waypoint-marker.selected .waypoint-label{
