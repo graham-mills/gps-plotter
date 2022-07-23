@@ -8,13 +8,13 @@
     <link rel="icon" type="image/x-icon" href="static/img/location-dot-solid.svg" />
   </head>
   <body>
-    <div class="container-fluid mt-2">
+    <div class="container-fluid mt-2 resp-padding">
       <div class="row">
         <div class="col mb-2">
           <div id="map"></div>
         </div>
         
-        <div id="side-menu" class="col-xxl-4 pt-1">
+        <div id="side-menu" class="col-xxl-4 pt-1 pb-1 resp-padding">
           <div id="controls" class="row mb-1">
             <div class="col btn-group">
               <button
@@ -109,7 +109,7 @@
                   </button>
                 </div>
                 <!-- Group Name -->
-                <div class="col-sm-9"><b data-bind="text: group.name"></b></div>
+                <div class="col-9"><b data-bind="text: group.name"></b></div>
                 <!-- Delete button -->
                 <div class="col">
                   <button
@@ -138,7 +138,7 @@
                     <i class="btn btn-sm fa-solid fa-grip-lines handle" title="Re-order"></i>
                   </div>
                   <!-- Name, Position -->
-                  <div class="col-sm-9">
+                  <div class="col-9">
                     <div class="row">
                       <span class="col-4" data-bind="text: waypoint.name"></span>
                       <span class="col-8" data-bind="text: waypoint.position().toString()"></span>
@@ -202,9 +202,6 @@
                   </button>
                   <button type="submit" class="btn btn-sm btn-secondary" data-bind="click: $root.resetForm">
                     Reset
-                  </button>
-                  <button type="submit" class="btn btn-sm btn-secondary" data-bind="click: $root.resetForm">
-                    Add Waypoint
                   </button>
                 </div>
               </div>

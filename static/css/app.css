@@ -10,10 +10,68 @@
 
 /* bootstrap overrides */
 
+.row {
+    --bs-gutter-x: 0;
+}
 
+/* media queries */
 
+/* xs */
+@media screen and (min-width: 0px) {
+    .resp-margin {
+        margin-left:0;
+        margin-right:0;
+    }
+    .resp-padding {
+        padding-left:0;
+        padding-right:0;
+    }
+}
 
-/* end bootstrap overrides */
+/* s */
+@media screen and (min-width: 576px) {
+    .resp-margin {
+        margin-left:1px;
+        margin-right:1px;
+    }
+    .resp-padding {
+        padding-left:1px;
+        padding-right:1px;
+    }
+}
+
+/* m */
+@media screen and (min-width: 768px) {
+    .resp-margin {
+        margin-left:12px;
+        margin-right:12px;
+    }
+    .resp-padding {
+        padding-left:12px;
+        padding-right:12px;
+    }
+}
+
+/* l */
+@media screen and (min-width: 992px) {
+}
+
+/* xl */
+@media screen and (min-width: 1200px) {
+    #side-menu {
+        height: fit-content;
+    }
+}
+
+/* xxl */
+@media screen and (min-width: 1400px) {
+    #side-menu {
+        height: var(--map-height);
+        max-height: var(--map-max-height);
+    }
+}
+
+/* end media queries */
 
 body {
     background-color: white;
@@ -72,14 +130,12 @@ body {
 /* </map> */
 
 #side-menu {
-    height: var(--map-height);
-    max-height: var(--map-max-height);
     background-color: gainsboro;
-    overflow-y: scroll;
 }
 
 #group-list {
-    max-height:60%;
+    height:fit-content;
+    max-height: 30vw;
     padding-left:0px;
     overflow-y: scroll;
     overflow-x: hidden;
