@@ -3,7 +3,7 @@
   data-bind="foreach: { data: group.waypoints, as: 'waypoint'}, attr: {'id': 'waypoint-list-' + group.id}, hidden: group.collapsed"
 >
   <li
-    class="waypoint-row row"
+    class="waypoint-row row no-gutter"
     data-bind="click: function() { $root.selectWaypointById(waypoint.id); }, css: { selected: waypoint.selected }"
   >
     <!-- Spacer -->

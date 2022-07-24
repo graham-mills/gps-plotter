@@ -61,7 +61,8 @@ export class MapManager {
 
     /** Adds the new waypoint to the map */
     private handleWaypointAdded(event: WaypointAddedEvent): void {
-        this.map.addWaypoint(event.waypoint);
+        this.map.removeWaypointGroup(event.waypoint.group!);
+        this.map.addWaypointGroup(event.waypoint.group!);
     }
 
     /** Removes the waypoint from the map */

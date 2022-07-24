@@ -5,7 +5,11 @@ import { WaypointGroup } from "./model/waypoint_group";
 
 /** Add new waypoint to model */
 export class AddWaypointEvent {
-    constructor(public waypoint: Waypoint, public groupId: number) {}
+    constructor(
+        public waypoint: Waypoint,
+        public groupId: number,
+        public atIndex: Optional<number> = null
+    ) {}
 }
 
 /** Remove waypoint from model */

@@ -35,9 +35,12 @@ export class WaypointGroup {
         return new WaypointGroup(id, waypoints);
     }
     addWaypoint(waypoint: Waypoint) {
+        this.addWaypointAtIndex(waypoint, this.waypoints.length);
+    }
+    addWaypointAtIndex(waypoint: Waypoint, index: number) {
         const exists = this.waypoints().find((wpt: Waypoint) => wpt.id == waypoint.id);
         if (!exists) {
-            this.waypoints.push(waypoint);
+            this.waypoints.splice(index, 0, waypoint);
             waypoint.group = this;
         }
     }

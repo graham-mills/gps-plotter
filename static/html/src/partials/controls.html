@@ -12,6 +12,15 @@
     <button
       type="button"
       class="btn btn-sm btn-primary shadow-none"
+      title="Add new waypoint"
+      data-bind="click: $root.addWaypoint"
+    >
+      <i class="fa-solid fa-location-dot"></i>
+      Add Waypoint
+    </button>
+    <button
+      type="button"
+      class="btn btn-sm btn-primary shadow-none"
       title="Import waypoints from CSV"
       data-bs-toggle="modal"
       data-bs-target="#import-modal"
@@ -35,7 +44,7 @@
       data-bs-target="#reset-modal"
     >
       <i class="fa-solid fa-trash-can"></i>
-      Delete All
+      Reset
     </button>
   </div>
 </div>

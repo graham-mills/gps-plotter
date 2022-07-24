@@ -42,7 +42,7 @@ export function init() {
 
     // Construct view models
     let groupList = new GroupList(eventBus, model);
-    let controlsViewModel = new ControlsViewModel(eventBus);
+    let controlsViewModel = new ControlsViewModel(eventBus, map);
     let editWaypointForm = new EditWaypointForm(eventBus);
     let editGroupForm = new EditWaypointGroupForm(eventBus);
     let importForm = new ImportForm(eventBus, model);

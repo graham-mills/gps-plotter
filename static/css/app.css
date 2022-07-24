@@ -10,7 +10,7 @@
 
 /* bootstrap overrides */
 
-.row {
+.no-gutter {
     --bs-gutter-x: 0;
 }
 
@@ -19,24 +19,24 @@
 /* xs */
 @media screen and (min-width: 0px) {
     .resp-margin {
-        margin-left:0;
-        margin-right:0;
+        margin-left:2px;
+        margin-right:2px;
     }
     .resp-padding {
-        padding-left:0;
-        padding-right:0;
+        padding-left:2px;
+        padding-right:2px;
     }
 }
 
 /* s */
 @media screen and (min-width: 576px) {
     .resp-margin {
-        margin-left:1px;
-        margin-right:1px;
+        margin-left:2px;
+        margin-right:2px;
     }
     .resp-padding {
-        padding-left:1px;
-        padding-right:1px;
+        padding-left:2px;
+        padding-right:2px;
     }
 }
 

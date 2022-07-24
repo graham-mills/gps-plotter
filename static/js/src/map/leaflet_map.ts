@@ -127,6 +127,10 @@ export class LeafletMap implements MapInterface {
             });
         }
     }
+    getCenterLatLng(): [number, number] {
+        const center = this.map.getCenter();
+        return [center.lat, center.lng];
+    }
     //#endregion
     private initMap() {
         L.tileLayer(

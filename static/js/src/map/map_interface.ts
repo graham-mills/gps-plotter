@@ -33,4 +33,7 @@ export interface MapInterface {
 
     /** Remove any visual highlight from the group's polyline */
     waypointGroupDeselected(group: WaypointGroup): void;
+
+    /** Obtain lat/lng of center of view */
+    getCenterLatLng(): [lat: number, lng: number];
 }

@@ -66,7 +66,11 @@ export class ModelManager {
     /** Adds a waypoint to an existing group. A group must be created before a waypoint can be added. */
     private handleAddWaypoint(event: AddWaypointEvent): void {
         const group = this.model.lookupGroupById(event.groupId)!;
-        group.addWaypoint(event.waypoint);
+        if (event.atIndex == null) {
+            group.addWaypoint(event.waypoint);
+        } else {
+            group.addWaypointAtIndex(event.waypoint, event.atIndex!);
+        }
         this.eventBus.publish(new WaypointAddedEvent(event.waypoint));
     }
 

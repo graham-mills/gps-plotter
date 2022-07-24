@@ -23,6 +23,7 @@ class ModelConfig {
     DefaultGroupNamePrefix = "group-";
     DefaultWaypointNamePrefix = "waypoint-";
     DefaultGroupColors: Array<string> = ["#ff0000", "#00ff00", "#0000ff"];
+    NewWaypointPositionOffset = -0.005;
 }
 
 class MapConfig {
