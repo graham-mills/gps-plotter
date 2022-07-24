@@ -64,8 +64,8 @@ export class EditWaypointForm {
         if (!this.source) return;
         let updatedWaypoint = this.source;
         updatedWaypoint.name(this.name());
-        updatedWaypoint.position().latitude(this.latitude());
-        updatedWaypoint.position().longitude(this.longitude());
+        updatedWaypoint.position().latitude(Number(this.latitude()));
+        updatedWaypoint.position().longitude(Number(this.longitude()));
         this.eventBus.publish(new UpdateWaypointEvent(updatedWaypoint));
     }
 }
