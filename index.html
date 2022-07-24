@@ -49,6 +49,8 @@
                 type="button"
                 class="btn btn-sm btn-primary shadow-none"
                 title="Export waypoints as CSV"
+                data-bs-toggle="modal"
+                data-bs-target="#export-modal"
               >
                 <i class="fa-solid fa-clipboard"></i>
                 Export (CSV)
@@ -349,6 +351,35 @@
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
               <button type="button" class="btn btn-primary" data-bind="click: importWaypoints">
                 Import Waypoints
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="export-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Export Waypoints</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row mb-2">
+                <label class="col-sm-2 col-form-label col-form-label-sm">CSV Data</label>
+                <div class="col-sm-10">
+                  <textarea
+                    class="form-control"
+                    rows="10"
+                    placeholder=""
+                    data-bind="textInput: exportText"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bind="click: copyToClipboard, html: copyButtonHtml">
               </button>
             </div>
           </div>

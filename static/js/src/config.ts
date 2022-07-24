@@ -9,11 +9,11 @@ class DOMSymbols {
     Controls = "controls";
     EditGroupForm = "edit-group-form";
     EditWaypointForm = "edit-waypoint-form";
-    ImportModal = "import-modal";
     Map = "map";
+    ImportModal = "import-modal";
+    ExportModal = "export-modal";
     ResetModal = "reset-modal";
     WaypointGroupList = "group-list";
-    WaypointImportModal = "import-modal";
     WaypointImportSubmitButton = "waypoint-input-submit";
     WaypointImportTextArea = "waypoint-input";
     WaypointListPrefix = "waypoint-list-";

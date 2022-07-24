@@ -13,6 +13,7 @@ import { ControlsViewModel } from "./viewmodels/controls";
 import { EditWaypointForm } from "./viewmodels/edit_waypoint_form";
 import { EditWaypointGroupForm } from "./viewmodels/edit_group_form";
 import { ImportForm } from "./viewmodels/import_form";
+import { ExportForm } from "./viewmodels/export_form";
 import { AppConfig } from "./config";
 import { WaypointSorter } from "./sorter";
 
@@ -46,6 +47,7 @@ export function init() {
     let editWaypointForm = new EditWaypointForm(eventBus);
     let editGroupForm = new EditWaypointGroupForm(eventBus);
     let importForm = new ImportForm(eventBus, model);
+    let exportForm = new ExportForm(eventBus, model);
 
     seedModel(eventBus);
 }
