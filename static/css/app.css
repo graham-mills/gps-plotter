@@ -180,6 +180,10 @@ body {
     background-color:cornflowerblue;
 }
 
+.waypoint-row:hover:not(.waypoint-row.selected), .group-row:hover:not(.group-row.selected) {
+    background-color: #eee;
+}
+
 .group-row {
     list-style: none;
     border-top: 1px solid gainsboro;
