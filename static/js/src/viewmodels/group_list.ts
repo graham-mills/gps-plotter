@@ -119,6 +119,12 @@ export class GroupList {
         if (this.selectedGroup && this.selectedGroup.id == event.group.id) {
             this.deselectWaypointGroup();
         }
+        if (
+            this.selectedWaypoint &&
+            this.selectedWaypoint.group!.id == event.group.id
+        ) {
+            this.deselectWaypoint();
+        }
     }
 
     // #endregion
