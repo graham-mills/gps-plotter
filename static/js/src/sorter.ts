@@ -82,12 +82,19 @@ export class WaypointSorter {
         );
         if (srcId != srcGroupId) return;
 
+        // Sortable modifies the DOM without modifying the KO viewmodel,
+        // when we sync the viewmodel to match the DOM, KO will render
+        // a duplicate list item. To counteract this, we'll just delete
+        // the moved element.
+        event.item.remove();
+
         // Move Waypoint from source group to destination group
         const srcIndex = Number(event.oldIndex);
         const destIndex = Number(event.newIndex);
         const waypoint = srcGroup.waypoints()[srcIndex];
-        srcGroup.waypoints().splice(srcIndex, 1);
-        destGroup.waypoints().splice(destIndex, 0, waypoint);
+        srcGroup.waypoints.splice(srcIndex, 1);
+        destGroup.waypoints.splice(destIndex, 0, waypoint);
+        waypoint.group = destGroup;
 
         // Publish sorted event
         this.eventBus.publish(

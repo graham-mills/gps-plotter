@@ -67,7 +67,7 @@ export class MapManager {
 
     /** Removes the waypoint from the map */
     private handleWaypointRemoved(event: WaypointRemovedEvent): void {
-        this.map.removeWaypoint(event.waypoint, event.group);
+        this.map.removeWaypoint(event.waypoint);
     }
 
     /** Adds the new waypoint group to the map */
@@ -103,7 +103,7 @@ export class MapManager {
 
     /** Updates the map marker and group polyline for the updated waypoint */
     private handleWaypointUpdated(event: WaypointUpdatedEvent) {
-        this.map.removeWaypoint(event.waypoint, event.waypoint.group!);
+        this.map.removeWaypoint(event.waypoint);
         this.map.addWaypoint(event.waypoint);
     }
 

@@ -57,13 +57,13 @@ export class LeafletMap implements MapInterface {
             this.addWaypointGroupPolyline(group);
         }
     }
-    removeWaypoint(waypoint: Waypoint, group: WaypointGroup) {
+    removeWaypoint(waypoint: Waypoint) {
         const waypointMarker = this.lookupMarker(waypoint.id);
         if (!waypointMarker) return;
         this.removeWaypointMarker(waypoint.id);
-        this.removeWaypointGroupPolyline(group.id);
-        if (group.drawPolyline()) {
-            this.addWaypointGroupPolyline(group);
+        this.removeWaypointGroupPolyline(waypoint.group!.id);
+        if (waypoint.group!.drawPolyline()) {
+            this.addWaypointGroupPolyline(waypoint.group!);
         }
     }
     removeWaypointGroup(group: WaypointGroup) {

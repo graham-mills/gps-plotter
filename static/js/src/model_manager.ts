@@ -79,7 +79,7 @@ export class ModelManager {
         let group = this.model.lookupGroupForWaypointId(event.waypointId)!;
         const waypoint = this.model.lookupWaypointById(event.waypointId)!;
         group.waypoints.remove(waypoint);
-        this.eventBus.publish(new WaypointRemovedEvent(waypoint, group));
+        this.eventBus.publish(new WaypointRemovedEvent(waypoint));
     }
 
     /** Adds a waypoint group to the model */

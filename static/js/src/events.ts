@@ -79,7 +79,7 @@ export class WaypointAddedEvent {
 
 /** Waypoint has been removed from the model */
 export class WaypointRemovedEvent {
-    constructor(public waypoint: Waypoint, public group: WaypointGroup) {}
+    constructor(public waypoint: Waypoint) {}
 }
 
 /** Waypoint group has been added to the model */

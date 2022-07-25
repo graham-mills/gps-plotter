@@ -11,7 +11,7 @@ export interface MapInterface {
     addWaypointGroup(group: WaypointGroup): void;
 
     /** Remove marker for waypoint. This will also remove marker from group's polyline. */
-    removeWaypoint(waypoint: Waypoint, group: WaypointGroup): void;
+    removeWaypoint(waypoint: Waypoint): void;
 
     /** Remove map markers for each waypoint in group. This will also remove the waypoint group's polyline. */
     removeWaypointGroup(group: WaypointGroup): void;

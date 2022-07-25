@@ -9,6 +9,13 @@ export class Model {
         this.waypointGroups = ko.observableArray();
     }
 
+    public log() {
+        this.waypointGroups().forEach((group: WaypointGroup) => {
+            console.info(group.name());
+            console.info(group.waypoints());
+        });
+    }
+
     /** Returns `WaypointGroup` matching id, or null */
     public lookupGroupById(id: number) {
         for (let group of this.waypointGroups()) {
