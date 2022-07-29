@@ -13,6 +13,7 @@ import { AppConfig } from "../config";
 import { Model } from "../model/model";
 import { Waypoint } from "../model/waypoint";
 import { waypoints_from_csv, ParseError } from "../csv_parse";
+import * as bootstrap from "bootstrap";
 
 enum MappingOption {
     DefaultColumnMapping = 1,
@@ -80,14 +81,13 @@ export class ImportForm {
                 customLongitudeMapping
             );
 
-            if (this.formData.groupId() == 0) {
+            const groupId = Number(this.formData.groupId());
+            if (groupId == 0) {
                 const group = WaypointGroup.makeUnique(waypoints);
                 this.eventBus.publish(new AddWaypointGroupEvent(group));
             } else {
                 waypoints.forEach((waypoint) => {
-                    this.eventBus.publish(
-                        new AddWaypointEvent(waypoint, this.formData.groupId())
-                    );
+                    this.eventBus.publish(new AddWaypointEvent(waypoint, groupId));
                 });
             }
             this.closeModal();
@@ -102,7 +102,12 @@ export class ImportForm {
 
     // #endregion Knockout Bound Methods
 
-    private closeModal() {}
+    private closeModal() {
+        const element = document.getElementById(AppConfig.DOMSymbols.ImportModal);
+        if (element) {
+            bootstrap.Modal.getInstance(element)?.hide();
+        }
+    }
 
     private validateForm(): boolean {
         if (this.formData.importText().trim().length == 0) {

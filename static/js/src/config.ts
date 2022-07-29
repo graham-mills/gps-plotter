@@ -1,6 +1,6 @@
 class UIConfig {
     // Decimal places shown to the user for latitude and longitude values
-    LatLongPrecision: number = 5;
+    LatLongPrecision: number = 6;
     // CSS class applied when a sortable list item is being dragged
     SortableGhostClass: string = "ghost";
 }
