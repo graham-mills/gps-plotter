@@ -17,6 +17,7 @@ class DOMSymbols {
     WaypointImportSubmitButton = "waypoint-input-submit";
     WaypointImportTextArea = "waypoint-input";
     WaypointListPrefix = "waypoint-list-";
+    WaypointRowPrefix = "waypoint-row-";
 }
 
 class ModelConfig {

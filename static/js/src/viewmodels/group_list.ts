@@ -101,6 +101,9 @@ export class GroupList {
         if (this.selectedWaypoint?.id == event.waypoint.id) return;
         this.deselectAll();
         this.selectedWaypoint = event.waypoint;
+        document
+            .getElementById(AppConfig.DOMSymbols.WaypointRowPrefix + event.waypoint.id)
+            ?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     private handleWaypointGroupSelected(event: WaypointGroupSelectedEvent) {
@@ -147,109 +150,4 @@ export class GroupList {
             this.selectedGroup = null;
         }
     }
-    // selectGroup(groupId: number) {
-    //     let group = this.model.lookupGroupById(groupId);
-    //     if (!group) return;
-
-    //     if (this.selectedGroup() && this.selectedGroup()!.id == groupId)
-    //     {
-    //         this.controller.map.focusOnWaypointGroup(group);
-    //         return;
-    //     }
-
-    //     this.deselectAll();
-    //     this.selectedGroup(group);
-    //     group.selected(true);
-    //     this.groupFormData().populate(group);
-    // }
-    // selectWaypoint(waypointId: number) {
-    //     let waypoint = this.model.lookupWaypointById(waypointId);
-    //     if (!waypoint) return;
-
-    //     if (this.selectedWaypoint()?.id == waypoint.id)
-    //     {
-    //         this.controller.map.focusOnWaypoint(waypoint);
-    //         return;
-    //     }
-
-    //     this.deselectAll();
-    //     this.selectedWaypoint(waypoint);
-    //     waypoint.selected(true);
-    //     this.controller.selectWaypoint(waypoint);
-    //     this.waypointFormData().populate(waypoint);
-    // }
-    // deselectAll() {
-    //     this.deselectGroup();
-    //     this.deselectWaypoint();
-    // }
-    // deselectGroup() {
-    //     if (this.selectedGroup())
-    //     {
-    //         this.deselectGroupById(this.selectedGroup()!.id);
-    //     }
-    // }
-    // deselectWaypoint() {
-    //     if (this.selectedWaypoint())
-    //     {
-    //         this.deselectWaypointById(this.selectedWaypoint()!.id);
-    //     }
-    // }
-    // deselectGroupById(groupId: number) {
-    //     this.model.lookupGroupById(groupId)?.selected(false);
-    //     this.selectedGroup(null);
-    // }
-    // deselectWaypointById(waypointId: number) {
-    //     this.model.lookupWaypointById(waypointId)?.selected(false);
-    //     this.selectedWaypoint(null);
-    //     const waypoint = this.model.lookupWaypointById(waypointId);
-    //     if (waypoint)
-    //     {
-    //         this.controller.deselectWaypoint(waypoint);
-    //     }
-    // }
-    // handleSelectedGroupSaved() {
-    //     if (!this.selectedGroup()) return;
-    //     this.controller.updateWaypointGroup(
-    //         this.selectedGroup()!.id,
-    //         this.groupFormData().name(),
-    //         this.groupFormData().drawPolyline(),
-    //         this.groupFormData().showMarkers(),
-    //         this.groupFormData().lineColor()
-    //     );
-    // }
-    // handleSelectedWaypointSaved() {
-    //     if (!this.selectedWaypoint() || !this.waypointFormData()) return;
-    //     this.controller.updateWaypoint(
-    //         this.selectedWaypoint()!.id,
-    //         this.waypointFormData().name(),
-    //         Number(this.waypointFormData().latitude()),
-    //         Number(this.waypointFormData().longitude())
-    //     );
-    // }
-    // handleAddEmptyGroup() {
-    //     let group = this.controller.addEmptyGroup();
-    //     this.selectGroup(group.id);
-    // }
-    // handleRemoveAllGroups() {
-    //     this.controller.handleRemoveAllGroups();
-    //     this.deselectAll();
-    // }
-    // handleRemoveWaypointGroup(groupId: number) {
-    //     this.controller.handleRemoveWaypointGroup(groupId);
-    //     if (this.selectedGroup() && this.selectedGroup()!.id == groupId)
-    //     {
-    //         this.deselectGroup();
-    //     }
-    //     if (this.selectedWaypoint() && !this.model.lookupWaypointById(this.selectedWaypoint()!.id))
-    //     {
-    //         this.deselectWaypoint();
-    //     }
-    // }
-    // handleRemoveWaypoint(waypointId: number) {
-    //     this.controller.handleRemoveWaypoint(waypointId);
-    //     if (this.selectedWaypoint() && !this.model.lookupWaypointById(this.selectedWaypoint()!.id))
-    //     {
-    //         this.deselectWaypoint();
-    //     }
-    // }
 }
