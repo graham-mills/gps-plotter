@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Waypoints</title>
     <link rel="icon" type="image/x-icon" href="static/img/location-dot-solid.svg" />
+    <script
+      type="text/javascript"
+      src="https://kit.fontawesome.com/50289b24c0.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <div class="container-fluid mt-2 resp-padding">
+    <div id="loading-screen">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+    </div>
+    <div id="app" class="container-fluid mt-2 resp-padding" style="visibility: hidden">
       <div class="row no-gutter">
         <map></map>
         <side-menu></side-menu>
@@ -18,11 +26,6 @@
       <reset-modal></reset-modal>
     </div>
 
-    <script
-      type="text/javascript"
-      src="https://kit.fontawesome.com/50289b24c0.js"
-      crossorigin="anonymous"
-    ></script>
     <script type="module" src="static/js/dist/bundle.js"></script>
   </body>
 </html>

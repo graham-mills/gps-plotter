@@ -4,7 +4,7 @@ import { LeafletMap } from "./map/leaflet_map";
 import { WaypointGroup } from "./model/waypoint_group";
 import { Waypoint } from "./model/waypoint";
 import { Model } from "./model/model";
-import { EventBus } from "./events";
+import { EventBus, AppInitialisedEvent } from "./events";
 import { AddWaypointGroupEvent } from "./events";
 import { ModelManager } from "./model_manager";
 import { MapManager } from "./map_manager";
@@ -16,6 +16,7 @@ import { ImportForm } from "./viewmodels/import_form";
 import { ExportForm } from "./viewmodels/export_form";
 import { AppConfig } from "./config";
 import { WaypointSorter } from "./sorter";
+import { LoadingScreen } from "./loading_screen";
 
 /** Adds some dummy data to the data model for testing / evaluation */
 function seedModel(eventBus: EventBus) {
@@ -40,6 +41,7 @@ export function init() {
     let modelManager = new ModelManager(eventBus, model);
     let mapManager = new MapManager(eventBus, map);
     let sorter = new WaypointSorter(eventBus, model);
+    let loadingScreen = new LoadingScreen(eventBus);
 
     // Construct view models
     let groupList = new GroupList(eventBus, model);
@@ -50,6 +52,7 @@ export function init() {
     let exportForm = new ExportForm(eventBus, model);
 
     seedModel(eventBus);
+    eventBus.publish(new AppInitialisedEvent());
 }
 
 init();

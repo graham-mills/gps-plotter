@@ -6,11 +6,13 @@ class UIConfig {
 }
 
 class DOMSymbols {
+    Application = "app";
     Controls = "controls";
     EditGroupForm = "edit-group-form";
     EditWaypointForm = "edit-waypoint-form";
-    Map = "map";
     ImportModal = "import-modal";
+    LoadingScreen = "loading-screen";
+    Map = "map";
     ExportModal = "export-modal";
     ResetModal = "reset-modal";
     WaypointGroupList = "group-list";

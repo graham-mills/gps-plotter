@@ -1,10 +1,6 @@
 import {
-    AddWaypointEvent,
-    AddWaypointGroupEvent,
     EventBus,
     HideWaypointGroupEvent,
-    RemoveWaypointEvent,
-    RemoveWaypointGroupEvent,
     ShowWaypointGroupEvent,
     WaypointAddedEvent,
     WaypointDeselectedEvent,

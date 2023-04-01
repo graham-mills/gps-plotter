@@ -3,6 +3,11 @@ import { WaypointGroup } from "./model/waypoint_group";
 
 // #region events
 
+/** App initialised; model seeded */
+export class AppInitialisedEvent {
+    constructor() {}
+}
+
 /** Add new waypoint to model */
 export class AddWaypointEvent {
     constructor(
@@ -139,7 +144,8 @@ export type EventType =
     | WaypointSelectedEvent
     | WaypointGroupSelectedEvent
     | WaypointDeselectedEvent
-    | WaypointGroupDeselectedEvent;
+    | WaypointGroupDeselectedEvent
+    | AppInitialisedEvent;
 
 type Callback<T> = (event: T) => void;
 
@@ -175,6 +181,10 @@ export class EventBus {
     public publish(event: EventType) {
         const eventName = event.constructor.name;
         this.getPublisher(eventName)!.publish(event);
+    }
+    public subscribeToAppInitialisedEvent(callback: Callback<AppInitialisedEvent>) {
+        let pub = this.getPublisher<AppInitialisedEvent>("AppInitialisedEvent");
+        pub.subscribe(callback);
     }
     public subscribeToAddWaypointEvent(callback: Callback<AddWaypointEvent>) {
         let pub = this.getPublisher<AddWaypointEvent>("AddWaypointEvent");
