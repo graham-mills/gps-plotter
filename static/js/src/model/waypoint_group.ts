@@ -13,6 +13,7 @@ export class WaypointGroup {
     lineColor: ko.Observable<string>;
     drawPolyline: ko.Observable<boolean>;
     showMarkers: ko.Observable<boolean>;
+    showMarkerLabels: ko.Observable<boolean>;
     selected: ko.Observable<boolean>;
 
     constructor(id: number, waypoints: Array<Waypoint>) {
@@ -24,6 +25,7 @@ export class WaypointGroup {
         this.visible = ko.observable(Boolean(true));
         this.collapsed = ko.observable(Boolean(false));
         this.showMarkers = ko.observable(Boolean(true));
+        this.showMarkerLabels = ko.observable(Boolean(true));
         this.selected = ko.observable(Boolean(false));
 
         const colorIndex = this.id % AppConfig.Model.DefaultGroupColors.length;

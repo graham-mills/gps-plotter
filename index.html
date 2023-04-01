@@ -196,7 +196,7 @@
                   <input type="text" class="form-control" data-bind="value: $root.name" />
                 </div>
                 <div class="input-group input-group-sm mb-2">
-                  <span class="input-group-text">Draw Polyline</span>
+                  <span class="input-group-text">Show Polyline</span>
                   <div class="form-control">
                     <input type="checkbox" class="form-check-input" data-bind="checked: $root.drawPolyline" />
                   </div>
@@ -205,6 +205,16 @@
                   <span class="input-group-text">Show Markers</span>
                   <div class="form-control">
                     <input type="checkbox" class="form-check-input" data-bind="checked: $root.showMarkers" />
+                  </div>
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                  <span class="input-group-text">Show Marker Labels</span>
+                  <div class="form-control">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      data-bind="checked: $root.showMarkerLabels, enable: $root.showMarkers"
+                    />
                   </div>
                 </div>
                 <div class="input-group input-group-sm mb-3">

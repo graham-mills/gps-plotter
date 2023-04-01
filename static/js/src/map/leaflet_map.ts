@@ -224,7 +224,9 @@ export class LeafletMap implements MapInterface {
             AppConfig.Map.MapMarkerIdPrefix + waypoint.id.toString()
         }" class="${AppConfig.Map.MapMarkerClass}">`;
         markerHtml += `<div class="waypoint-icon" style="background-color: ${group.lineColor()}"></div>`;
-        markerHtml += `<div class="waypoint-label">${waypoint.name()}</div>`;
+        if (group.showMarkerLabels()) {
+            markerHtml += `<div class="waypoint-label">${waypoint.name()}</div>`;
+        }
         markerHtml += `</div>`;
         return L.divIcon({ html: markerHtml });
     }

@@ -16,6 +16,7 @@ export class EditWaypointGroupForm {
     name: ko.Observable<string> = ko.observable("");
     drawPolyline: ko.Observable<boolean> = ko.observable(Boolean(false));
     showMarkers: ko.Observable<boolean> = ko.observable(Boolean(false));
+    showMarkerLabels: ko.Observable<boolean> = ko.observable(Boolean(false));
     lineColor: ko.Observable<string> = ko.observable("#ffffff");
     showForm: ko.Observable<boolean> = ko.observable(Boolean(false));
 
@@ -49,6 +50,7 @@ export class EditWaypointGroupForm {
         this.name(source.name());
         this.drawPolyline(source.drawPolyline());
         this.showMarkers(source.showMarkers());
+        this.showMarkerLabels(source.showMarkerLabels());
         this.lineColor(source.lineColor());
     }
 
@@ -64,6 +66,7 @@ export class EditWaypointGroupForm {
         updatedGroup.name(this.name());
         updatedGroup.drawPolyline(this.drawPolyline());
         updatedGroup.showMarkers(this.showMarkers());
+        updatedGroup.showMarkerLabels(this.showMarkerLabels());
         updatedGroup.lineColor(this.lineColor());
         this.eventBus.publish(new UpdateWaypointGroupEvent(updatedGroup));
     }
