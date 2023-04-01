@@ -4,10 +4,11 @@ export class ParseError {
     constructor(public message: string) {}
 }
 
-export function waypoints_from_csv(
+export function waypointsFromCsv(
     text: string,
     userSpecifiedLatitudeColName: Optional<string> = null,
-    userSpecifiedLongitudeColName: Optional<string> = null
+    userSpecifiedLongitudeColName: Optional<string> = null,
+    filterSampleSize: Optional<number> = null
 ): Array<Waypoint> {
     const lines = text.split("\n");
     const headerRow = lines[0];
@@ -28,6 +29,9 @@ export function waypoints_from_csv(
 
     let waypoints: Array<Waypoint> = [];
     for (let i = dataRowStart; i < lines.length; ++i) {
+        if (skipRow(i, dataRowStart, lines.length - 1, filterSampleSize)) {
+            continue;
+        }
         const waypoint = parseLine(lines[i], i + 1, latIndex, lonIndex);
         waypoints.push(waypoint);
     }
@@ -109,4 +113,21 @@ function parseLine(
         );
 
     return Waypoint.fromDecimalDegrees(latitude, longitude);
+}
+
+function skipRow(
+    rowNumber: number,
+    firstRow: number,
+    lastRow: number,
+    takeNthRow: Optional<number>
+): boolean {
+    return !takeNthRow
+        ? false
+        : rowNumber == firstRow
+        ? false
+        : rowNumber == lastRow
+        ? false
+        : rowNumber % takeNthRow == 0
+        ? false
+        : true;
 }

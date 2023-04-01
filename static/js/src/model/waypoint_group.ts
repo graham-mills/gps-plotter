@@ -22,6 +22,7 @@ export class WaypointGroup {
             AppConfig.Model.DefaultGroupNamePrefix + String(this.id)
         );
         this.waypoints = ko.observableArray(waypoints);
+        this.waypoints().forEach((wpt) => (wpt.group = this));
         this.visible = ko.observable(Boolean(true));
         this.collapsed = ko.observable(Boolean(false));
         this.showMarkers = ko.observable(Boolean(true));

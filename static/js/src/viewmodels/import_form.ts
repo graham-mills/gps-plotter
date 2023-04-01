@@ -1,23 +1,19 @@
-import {
-    AddWaypointEvent,
-    AddWaypointGroupEvent,
-    EventBus,
-    WaypointGroupAddedEvent,
-    WaypointGroupRemovedEvent,
-    WaypointGroupSelectedEvent,
-    WaypointSelectedEvent,
-} from "../events";
+import { AddWaypointEvent, AddWaypointGroupEvent, EventBus } from "../events";
 import * as ko from "knockout";
 import { WaypointGroup } from "../model/waypoint_group";
 import { AppConfig } from "../config";
 import { Model } from "../model/model";
-import { Waypoint } from "../model/waypoint";
-import { waypoints_from_csv, ParseError } from "../csv_parse";
+import { waypointsFromCsv, ParseError } from "../csv_parse";
 import * as bootstrap from "bootstrap";
 
 enum MappingOption {
     DefaultColumnMapping = 1,
     CustomColumnMapping = 2,
+}
+
+enum FilteringOption {
+    NoFiltering = 1,
+    Downsample = 2,
 }
 
 class FormData {
@@ -28,6 +24,9 @@ class FormData {
     latitudeColName = ko.observable("latitude");
     longitudeColName = ko.observable("longitude");
     importTextPlaceholder = ko.computed(this.generatePlaceholderText.bind(this));
+    enableDownsampling = ko.observable<boolean>(false);
+    filterSampleSize = ko.observable<number>(2);
+    ordinalForSampleSize = ko.computed(this.generateOrdinalForSampleSize.bind(this));
 
     private generatePlaceholderText(): string {
         let placeholder = "";
@@ -37,6 +36,21 @@ class FormData {
         }
         placeholder += "48.858093, 2.294694";
         return placeholder;
+    }
+
+    private generateOrdinalForSampleSize(): string {
+        const j = this.filterSampleSize() % 10;
+        const k = this.filterSampleSize() % 100;
+        if (j == 1 && k != 11) {
+            return "st";
+        }
+        if (j == 2 && k != 12) {
+            return "nd";
+        }
+        if (j == 3 && k != 13) {
+            return "rd";
+        }
+        return "th";
     }
 }
 
@@ -75,10 +89,15 @@ export class ImportForm {
                     ? this.formData.longitudeColName()
                     : null;
 
-            const waypoints = waypoints_from_csv(
+            const filterSampleSize = this.formData.enableDownsampling()
+                ? this.formData.filterSampleSize()
+                : 1;
+
+            const waypoints = waypointsFromCsv(
                 this.formData.importText(),
                 customLatitudeMapping,
-                customLongitudeMapping
+                customLongitudeMapping,
+                filterSampleSize
             );
 
             const groupId = Number(this.formData.groupId());
@@ -113,6 +132,15 @@ export class ImportForm {
         if (this.formData.importText().trim().length == 0) {
             this.formData.errorMessages.push(
                 "The field `CSV Data` cannot be left empty"
+            );
+            return false;
+        }
+        if (
+            this.formData.enableDownsampling() &&
+            Number(this.formData.filterSampleSize() < 2)
+        ) {
+            this.formData.errorMessages.push(
+                "The downsampling amount must be set to 2 or greater"
             );
             return false;
         }
