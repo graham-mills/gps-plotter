@@ -1,18 +1,18 @@
 import {
     EventBus,
-    HideWaypointGroupEvent,
-    ShowWaypointGroupEvent,
-    WaypointAddedEvent,
-    WaypointDeselectedEvent,
-    WaypointGroupAddedEvent,
-    WaypointGroupDeselectedEvent,
-    WaypointGroupRemovedEvent,
-    WaypointGroupSelectedEvent,
-    WaypointGroupUpdatedEvent,
-    WaypointRemovedEvent,
-    WaypointSelectedEvent,
-    WaypointSortedEvent,
-    WaypointUpdatedEvent,
+    HidePositionGroupEvent,
+    ShowPositionGroupEvent,
+    PositionAddedEvent,
+    PositionDeselectedEvent,
+    PositionGroupAddedEvent,
+    PositionGroupDeselectedEvent,
+    PositionGroupRemovedEvent,
+    PositionGroupSelectedEvent,
+    PositionGroupUpdatedEvent,
+    PositionRemovedEvent,
+    PositionSelectedEvent,
+    PositionSortedEvent,
+    PositionUpdatedEvent,
 } from "./events";
 import { MapInterface } from "./map/map_interface";
 
@@ -22,111 +22,111 @@ export class MapManager {
 
     constructor(eventBus: EventBus, map: MapInterface) {
         this.map = map;
-        eventBus.subscribeToWaypointAddedEvent(this.handleWaypointAdded.bind(this));
-        eventBus.subscribeToWaypointRemovedEvent(this.handleWaypointRemoved.bind(this));
-        eventBus.subscribeToWaypointGroupAddedEvent(
-            this.handleWaypointGroupAdded.bind(this)
+        eventBus.subscribeToPositionAddedEvent(this.handlePositionAdded.bind(this));
+        eventBus.subscribeToPositionRemovedEvent(this.handlePositionRemoved.bind(this));
+        eventBus.subscribeToPositionGroupAddedEvent(
+            this.handlePositionGroupAdded.bind(this)
         );
-        eventBus.subscribeToWaypointGroupRemovedEvent(
-            this.handleWaypointGroupRemoved.bind(this)
+        eventBus.subscribeToPositionGroupRemovedEvent(
+            this.handlePositionGroupRemoved.bind(this)
         );
-        eventBus.subscribeToWaypointSortedEvent(this.handleWaypointSorted.bind(this));
-        eventBus.subscribeToWaypointSelectedEvent(
-            this.handleWaypointSelected.bind(this)
+        eventBus.subscribeToPositionSortedEvent(this.handlePositionSorted.bind(this));
+        eventBus.subscribeToPositionSelectedEvent(
+            this.handlePositionSelected.bind(this)
         );
-        eventBus.subscribeToWaypointDeselectedEvent(
-            this.handleWaypointDeselected.bind(this)
+        eventBus.subscribeToPositionDeselectedEvent(
+            this.handlePositionDeselected.bind(this)
         );
-        eventBus.subscribeToWaypointGroupSelectedEvent(
-            this.handleWaypointGroupSelected.bind(this)
+        eventBus.subscribeToPositionGroupSelectedEvent(
+            this.handlePositionGroupSelected.bind(this)
         );
-        eventBus.subscribeToWaypointGroupDeselectedEvent(
-            this.handleWaypointGroupDeselected.bind(this)
+        eventBus.subscribeToPositionGroupDeselectedEvent(
+            this.handlePositionGroupDeselected.bind(this)
         );
-        eventBus.subscribeToWaypointUpdatedEvent(this.handleWaypointUpdated.bind(this));
-        eventBus.subscribeToWaypointGroupUpdatedEvent(
-            this.handleWaypointGroupUpdated.bind(this)
+        eventBus.subscribeToPositionUpdatedEvent(this.handlePositionUpdated.bind(this));
+        eventBus.subscribeToPositionGroupUpdatedEvent(
+            this.handlePositionGroupUpdated.bind(this)
         );
-        eventBus.subscribeToHideWaypointGroupEvent(
-            this.handleHideWaypointGroup.bind(this)
+        eventBus.subscribeToHidePositionGroupEvent(
+            this.handleHidePositionGroup.bind(this)
         );
-        eventBus.subscribeToShowWaypointGroupEvent(
-            this.handleShowWaypointGroup.bind(this)
+        eventBus.subscribeToShowPositionGroupEvent(
+            this.handleShowPositionGroup.bind(this)
         );
     }
 
-    /** Adds the new waypoint to the map */
-    private handleWaypointAdded(event: WaypointAddedEvent): void {
-        this.map.removeWaypointGroup(event.waypoint.group!);
-        this.map.addWaypointGroup(event.waypoint.group!);
+    /** Adds the new position to the map */
+    private handlePositionAdded(event: PositionAddedEvent): void {
+        this.map.removePositionGroup(event.position.group!);
+        this.map.addPositionGroup(event.position.group!);
     }
 
-    /** Removes the waypoint from the map */
-    private handleWaypointRemoved(event: WaypointRemovedEvent): void {
-        this.map.removeWaypoint(event.waypoint);
+    /** Removes the position from the map */
+    private handlePositionRemoved(event: PositionRemovedEvent): void {
+        this.map.removePosition(event.position);
     }
 
-    /** Adds the new waypoint group to the map */
-    private handleWaypointGroupAdded(event: WaypointGroupAddedEvent): void {
-        this.map.addWaypointGroup(event.group);
+    /** Adds the new position group to the map */
+    private handlePositionGroupAdded(event: PositionGroupAddedEvent): void {
+        this.map.addPositionGroup(event.group);
     }
 
-    /** Removes the waypoint group from the map */
-    private handleWaypointGroupRemoved(event: WaypointGroupRemovedEvent): void {
-        this.map.removeWaypointGroup(event.group);
+    /** Removes the position group from the map */
+    private handlePositionGroupRemoved(event: PositionGroupRemovedEvent): void {
+        this.map.removePositionGroup(event.group);
     }
 
-    /** Redraws the group the waypoint is in, and optionally the group it was moved from */
-    private handleWaypointSorted(event: WaypointSortedEvent): void {
-        this.map.removeWaypointGroup(event.currentGroup);
-        this.map.addWaypointGroup(event.currentGroup);
+    /** Redraws the group the position is in, and optionally the group it was moved from */
+    private handlePositionSorted(event: PositionSortedEvent): void {
+        this.map.removePositionGroup(event.currentGroup);
+        this.map.addPositionGroup(event.currentGroup);
         if (event) {
-            this.map.removeWaypointGroup(event.previousGroup);
-            this.map.addWaypointGroup(event.previousGroup);
+            this.map.removePositionGroup(event.previousGroup);
+            this.map.addPositionGroup(event.previousGroup);
         }
     }
 
-    /** Forwards event to the map to update the waypoint's map marker */
-    private handleWaypointSelected(event: WaypointSelectedEvent): void {
-        this.map.waypointSelected(event.waypoint);
-        this.map.focusOnWaypoint(event.waypoint);
+    /** Forwards event to the map to update the position's map marker */
+    private handlePositionSelected(event: PositionSelectedEvent): void {
+        this.map.positionSelected(event.position);
+        this.map.focusOnPosition(event.position);
     }
 
-    /** Forwards event to the map to update the waypoint's map marker */
-    private handleWaypointDeselected(event: WaypointDeselectedEvent) {
-        this.map.waypointDeselected(event.waypoint);
+    /** Forwards event to the map to update the position's map marker */
+    private handlePositionDeselected(event: PositionDeselectedEvent) {
+        this.map.positionDeselected(event.position);
     }
 
-    /** Updates the map marker and group polyline for the updated waypoint */
-    private handleWaypointUpdated(event: WaypointUpdatedEvent) {
-        this.map.removeWaypoint(event.waypoint);
-        this.map.addWaypoint(event.waypoint);
+    /** Updates the map marker and group polyline for the updated position */
+    private handlePositionUpdated(event: PositionUpdatedEvent) {
+        this.map.removePosition(event.position);
+        this.map.addPosition(event.position);
     }
 
     /** Updates all map markers and the polyline for the updated group */
-    private handleWaypointGroupUpdated(event: WaypointGroupUpdatedEvent) {
-        this.map.removeWaypointGroup(event.waypointGroup);
-        this.map.addWaypointGroup(event.waypointGroup);
+    private handlePositionGroupUpdated(event: PositionGroupUpdatedEvent) {
+        this.map.removePositionGroup(event.positionGroup);
+        this.map.addPositionGroup(event.positionGroup);
     }
 
     /** Pans to the group and redraws a thicker polyline */
-    private handleWaypointGroupSelected(event: WaypointGroupSelectedEvent) {
-        this.map.focusOnWaypointGroup(event.waypointGroup);
-        this.map.waypointGroupSelected(event.waypointGroup);
+    private handlePositionGroupSelected(event: PositionGroupSelectedEvent) {
+        this.map.focusOnPositionGroup(event.positionGroup);
+        this.map.positionGroupSelected(event.positionGroup);
     }
 
     /** Redraws the polyline at normal thickness */
-    private handleWaypointGroupDeselected(event: WaypointGroupDeselectedEvent) {
-        this.map.waypointGroupDeselected(event.waypointGroup);
+    private handlePositionGroupDeselected(event: PositionGroupDeselectedEvent) {
+        this.map.positionGroupDeselected(event.positionGroup);
     }
 
-    /** (Re)add waypoint group to map */
-    private handleShowWaypointGroup(event: ShowWaypointGroupEvent) {
-        this.map.addWaypointGroup(event.waypointGroup);
+    /** (Re)add position group to map */
+    private handleShowPositionGroup(event: ShowPositionGroupEvent) {
+        this.map.addPositionGroup(event.positionGroup);
     }
 
-    /** Remove waypoint group  map */
-    private handleHideWaypointGroup(event: HideWaypointGroupEvent) {
-        this.map.removeWaypointGroup(event.waypointGroup);
+    /** Remove position group  map */
+    private handleHidePositionGroup(event: HidePositionGroupEvent) {
+        this.map.removePositionGroup(event.positionGroup);
     }
 }

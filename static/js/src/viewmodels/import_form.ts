@@ -1,9 +1,9 @@
-import { AddWaypointEvent, AddWaypointGroupEvent, EventBus } from "../events";
+import { AddPositionEvent, AddPositionGroupEvent, EventBus } from "../events";
 import * as ko from "knockout";
-import { WaypointGroup } from "../model/waypoint_group";
+import { PositionGroup } from "../model/position_group";
 import { AppConfig } from "../config";
 import { Model } from "../model/model";
-import { waypointsFromCsv, ParseError } from "../csv_parse";
+import { positionsFromCsv, ParseError } from "../csv_parse";
 import * as bootstrap from "bootstrap";
 
 enum MappingOption {
@@ -72,7 +72,7 @@ export class ImportForm {
 
     // #region Knockout Bound Methods
 
-    private importWaypoints() {
+    private importPositions() {
         this.reset();
 
         if (!this.validateForm()) {
@@ -93,7 +93,7 @@ export class ImportForm {
                 ? this.formData.filterSampleSize()
                 : 1;
 
-            const waypoints = waypointsFromCsv(
+            const positions = positionsFromCsv(
                 this.formData.importText(),
                 customLatitudeMapping,
                 customLongitudeMapping,
@@ -102,11 +102,11 @@ export class ImportForm {
 
             const groupId = Number(this.formData.groupId());
             if (groupId == 0) {
-                const group = WaypointGroup.makeUnique(waypoints);
-                this.eventBus.publish(new AddWaypointGroupEvent(group));
+                const group = PositionGroup.makeUnique(positions);
+                this.eventBus.publish(new AddPositionGroupEvent(group));
             } else {
-                waypoints.forEach((waypoint) => {
-                    this.eventBus.publish(new AddWaypointEvent(waypoint, groupId));
+                positions.forEach((position) => {
+                    this.eventBus.publish(new AddPositionEvent(position, groupId));
                 });
             }
             this.closeModal();

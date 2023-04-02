@@ -1,19 +1,19 @@
 import { AppConfig } from "./config";
 import {
     EventBus,
-    WaypointSortedEvent,
-    WaypointGroupHtmlRenderedEvent,
-    WaypointGroupRemovedEvent,
+    PositionSortedEvent,
+    PositionGroupHtmlRenderedEvent,
+    PositionGroupRemovedEvent,
 } from "./events";
 import { Model } from "./model/model";
 import Sortable from "sortablejs";
 
 /**
- * This class uses the `sortablejs` library to enable drag and drop of waypoints. It allows the user
- * to modify a waypoint's position/index within a group, as well as to move a waypoint between
+ * This class uses the `sortablejs` library to enable drag and drop of positions. It allows the user
+ * to modify a position's position/index within a group, as well as to move a position between
  * groups, from and to any position/index.
  */
-export class WaypointSorter {
+export class PositionSorter {
     eventBus: EventBus;
     model: Model;
     sortables: Map<number, Sortable>;
@@ -23,48 +23,48 @@ export class WaypointSorter {
         this.model = model;
         this.sortables = new Map();
 
-        eventBus.subscribeToWaypointGroupRemovedEvent(
-            this.handleWaypointGroupRemoved.bind(this)
+        eventBus.subscribeToPositionGroupRemovedEvent(
+            this.handlePositionGroupRemoved.bind(this)
         );
-        eventBus.subscribeToWaypointGroupHtmlRenderedEvent(
-            this.handleWaypointGroupHtmlRendered.bind(this)
+        eventBus.subscribeToPositionGroupHtmlRenderedEvent(
+            this.handlePositionGroupHtmlRendered.bind(this)
         );
     }
 
-    private handleWaypointGroupRemoved(event: WaypointGroupRemovedEvent): void {
+    private handlePositionGroupRemoved(event: PositionGroupRemovedEvent): void {
         this.sortables.delete(event.group.id);
     }
 
-    private handleWaypointGroupHtmlRendered(
-        event: WaypointGroupHtmlRenderedEvent
+    private handlePositionGroupHtmlRendered(
+        event: PositionGroupHtmlRenderedEvent
     ): void {
         if (this.sortables.has(event.groupId)) return;
         this.initDragAndDrop(event.groupId);
     }
 
     private initDragAndDrop(groupId: number) {
-        const waypointListId =
-            AppConfig.DOMSymbols.WaypointListPrefix + groupId.toString();
-        const waypointListElement = document.getElementById(waypointListId)!;
+        const positionListId =
+            AppConfig.DOMSymbols.PositionListPrefix + groupId.toString();
+        const positionListElement = document.getElementById(positionListId)!;
 
         this.sortables.set(
             groupId,
-            new Sortable(waypointListElement, {
+            new Sortable(positionListElement, {
                 animation: 150,
                 ghostClass: "ghost",
                 group: "shared",
-                onSort: this.handleSortWaypoint.bind(this),
+                onSort: this.handleSortPosition.bind(this),
             })
         );
     }
 
-    private handleSortWaypoint(event: Sortable.SortableEvent) {
+    private handleSortPosition(event: Sortable.SortableEvent) {
         const srcGroupId = event.from.id.replace(
-            AppConfig.DOMSymbols.WaypointListPrefix,
+            AppConfig.DOMSymbols.PositionListPrefix,
             ""
         );
         const destGroupId = event.to.id.replace(
-            AppConfig.DOMSymbols.WaypointListPrefix,
+            AppConfig.DOMSymbols.PositionListPrefix,
             ""
         );
         const srcGroup = this.model.lookupGroupById(Number(srcGroupId));
@@ -72,12 +72,12 @@ export class WaypointSorter {
 
         if (!(srcGroup && destGroup)) return;
 
-        // Moving waypoints across lists, generates 2 very
+        // Moving positions across lists, generates 2 very
         // similar *sort* events. We only want to act upon
         // one of them. This is a guard to ignore the 2nd.
         // @ts-ignore: Deprecated property
         const srcId = event.srcElement.id.replace(
-            AppConfig.DOMSymbols.WaypointListPrefix,
+            AppConfig.DOMSymbols.PositionListPrefix,
             ""
         );
         if (srcId != srcGroupId) return;
@@ -88,17 +88,17 @@ export class WaypointSorter {
         // the moved element.
         event.item.remove();
 
-        // Move Waypoint from source group to destination group
+        // Move Position from source group to destination group
         const srcIndex = Number(event.oldIndex);
         const destIndex = Number(event.newIndex);
-        const waypoint = srcGroup.waypoints()[srcIndex];
-        srcGroup.waypoints.splice(srcIndex, 1);
-        destGroup.waypoints.splice(destIndex, 0, waypoint);
-        waypoint.group = destGroup;
+        const position = srcGroup.positions()[srcIndex];
+        srcGroup.positions.splice(srcIndex, 1);
+        destGroup.positions.splice(destIndex, 0, position);
+        position.group = destGroup;
 
         // Publish sorted event
         this.eventBus.publish(
-            new WaypointSortedEvent(waypoint, srcGroup, srcIndex, destGroup, destIndex)
+            new PositionSortedEvent(position, srcGroup, srcIndex, destGroup, destIndex)
         );
     }
 }

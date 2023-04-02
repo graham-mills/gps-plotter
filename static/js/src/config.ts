@@ -9,31 +9,31 @@ class DOMSymbols {
     Application = "app";
     Controls = "controls";
     EditGroupForm = "edit-group-form";
-    EditWaypointForm = "edit-waypoint-form";
+    EditPositionForm = "edit-position-form";
     ImportModal = "import-modal";
     LoadingScreen = "loading-screen";
     Map = "map";
     ExportModal = "export-modal";
     ResetModal = "reset-modal";
-    WaypointGroupList = "group-list";
-    WaypointImportSubmitButton = "waypoint-input-submit";
-    WaypointImportTextArea = "waypoint-input";
-    WaypointListPrefix = "waypoint-list-";
-    WaypointRowPrefix = "waypoint-row-";
+    PositionGroupList = "group-list";
+    PositionImportSubmitButton = "position-input-submit";
+    PositionImportTextArea = "position-input";
+    PositionListPrefix = "position-list-";
+    PositionRowPrefix = "position-row-";
 }
 
 class ModelConfig {
     DefaultGroupNamePrefix = "Group ";
-    DefaultWaypointNamePrefix = "Position ";
+    DefaultPositionNamePrefix = "Position ";
     DefaultGroupColors: Array<string> = ["#ff0000", "#00ff00", "#0000ff"];
-    NewWaypointPositionOffset = -0.001;
+    NewPositionPositionOffset = -0.001;
 }
 
 class MapConfig {
     MaxZoomLevel = 22;
     DefaultZoomLevel = 10;
-    MapMarkerClass = "waypoint-marker";
-    SelectedMapMarkerClass = "waypoint-marker selected";
+    MapMarkerClass = "position-marker";
+    SelectedMapMarkerClass = "position-marker selected";
     MapMarkerIdPrefix = "marker-";
     DefaultPolylineWidth = 2;
     SelectedPolylineWidth = 3;

@@ -3,7 +3,7 @@
     <button
       type="button"
       class="btn btn-sm btn-primary shadow-none"
-      title="Add new waypoint group"
+      title="Add new position group"
       data-bind="click: $root.addEmptyGroup"
     >
       <i class="fa-solid fa-vector-square"></i>
@@ -12,16 +12,16 @@
     <button
       type="button"
       class="btn btn-sm btn-primary shadow-none"
-      title="Add new waypoint"
-      data-bind="click: $root.addWaypoint"
+      title="Add new position"
+      data-bind="click: $root.addPosition"
     >
       <i class="fa-solid fa-location-dot"></i>
-      Add Waypoint
+      Add Position
     </button>
     <button
       type="button"
       class="btn btn-sm btn-primary shadow-none"
-      title="Import waypoints from CSV"
+      title="Import positions from CSV"
       data-bs-toggle="modal"
       data-bs-target="#import-modal"
     >
@@ -31,7 +31,7 @@
     <button
       type="button"
       class="btn btn-sm btn-primary shadow-none"
-      title="Export waypoints as CSV"
+      title="Export positions as CSV"
       data-bs-toggle="modal"
       data-bs-target="#export-modal"
     >
@@ -41,7 +41,7 @@
     <button
       type="button"
       class="btn btn-sm btn-danger shadow-none"
-      title="Remove all waypoints and waypoint groups"
+      title="Remove all positions and position groups"
       data-bs-toggle="modal"
       data-bs-target="#reset-modal"
     >

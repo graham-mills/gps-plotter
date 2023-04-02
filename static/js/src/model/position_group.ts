@@ -1,13 +1,13 @@
 import { AppConfig } from "../config";
-import { Waypoint } from "./waypoint";
+import { Position } from "./position";
 import * as ko from "knockout";
 
-export class WaypointGroup {
+export class PositionGroup {
     static _idGenerator: number = 0;
 
     id: number;
     name: ko.Observable<string>;
-    waypoints: ko.ObservableArray<Waypoint>;
+    positions: ko.ObservableArray<Position>;
     visible: ko.Observable<boolean>;
     collapsed: ko.Observable<boolean>;
     lineColor: ko.Observable<string>;
@@ -16,13 +16,13 @@ export class WaypointGroup {
     showMarkerLabels: ko.Observable<boolean>;
     selected: ko.Observable<boolean>;
 
-    constructor(id: number, waypoints: Array<Waypoint>) {
+    constructor(id: number, positions: Array<Position>) {
         this.id = id;
         this.name = ko.observable(
             AppConfig.Model.DefaultGroupNamePrefix + String(this.id)
         );
-        this.waypoints = ko.observableArray(waypoints);
-        this.waypoints().forEach((wpt) => (wpt.group = this));
+        this.positions = ko.observableArray(positions);
+        this.positions().forEach((wpt) => (wpt.group = this));
         this.visible = ko.observable(Boolean(true));
         this.collapsed = ko.observable(Boolean(false));
         this.showMarkers = ko.observable(Boolean(true));
@@ -33,18 +33,18 @@ export class WaypointGroup {
         this.lineColor = ko.observable(AppConfig.Model.DefaultGroupColors[colorIndex]);
         this.drawPolyline = ko.observable(Boolean(true));
     }
-    static makeUnique(waypoints: Array<Waypoint> = []) {
-        const id = ++WaypointGroup._idGenerator;
-        return new WaypointGroup(id, waypoints);
+    static makeUnique(positions: Array<Position> = []) {
+        const id = ++PositionGroup._idGenerator;
+        return new PositionGroup(id, positions);
     }
-    addWaypoint(waypoint: Waypoint) {
-        this.addWaypointAtIndex(waypoint, this.waypoints.length);
+    addPosition(position: Position) {
+        this.addPositionAtIndex(position, this.positions.length);
     }
-    addWaypointAtIndex(waypoint: Waypoint, index: number) {
-        const exists = this.waypoints().find((wpt: Waypoint) => wpt.id == waypoint.id);
+    addPositionAtIndex(position: Position, index: number) {
+        const exists = this.positions().find((wpt: Position) => wpt.id == position.id);
         if (!exists) {
-            this.waypoints.splice(index, 0, waypoint);
-            waypoint.group = this;
+            this.positions.splice(index, 0, position);
+            position.group = this;
         }
     }
     collapse() {

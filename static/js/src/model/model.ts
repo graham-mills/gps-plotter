@@ -1,24 +1,24 @@
 import { AppConfig } from "../config";
-import { WaypointGroup } from "./waypoint_group";
+import { PositionGroup } from "./position_group";
 import * as ko from "knockout";
 
 export class Model {
-    waypointGroups: ko.ObservableArray<WaypointGroup>;
+    positionGroups: ko.ObservableArray<PositionGroup>;
 
     constructor() {
-        this.waypointGroups = ko.observableArray();
+        this.positionGroups = ko.observableArray();
     }
 
     public log() {
-        this.waypointGroups().forEach((group: WaypointGroup) => {
+        this.positionGroups().forEach((group: PositionGroup) => {
             console.info(group.name());
-            console.info(group.waypoints());
+            console.info(group.positions());
         });
     }
 
-    /** Returns `WaypointGroup` matching id, or null */
+    /** Returns `PositionGroup` matching id, or null */
     public lookupGroupById(id: number) {
-        for (let group of this.waypointGroups()) {
+        for (let group of this.positionGroups()) {
             if (group.id == id) {
                 return group;
             }
@@ -26,11 +26,11 @@ export class Model {
         return null;
     }
 
-    /** Returns `Waypoint` matching id, or null */
-    public lookupWaypointById(waypointId: number) {
-        for (let group of this.waypointGroups()) {
-            for (let wpt of group.waypoints()) {
-                if (wpt.id == waypointId) {
+    /** Returns `Position` matching id, or null */
+    public lookupPositionById(positionId: number) {
+        for (let group of this.positionGroups()) {
+            for (let wpt of group.positions()) {
+                if (wpt.id == positionId) {
                     return wpt;
                 }
             }
@@ -38,10 +38,10 @@ export class Model {
         return null;
     }
 
-    /** Returns `WaypointGroup` containing waypoint with matching id, or null */
-    public lookupGroupForWaypointId(id: number) {
-        for (let group of this.waypointGroups()) {
-            for (let wpt of group.waypoints()) {
+    /** Returns `PositionGroup` containing position with matching id, or null */
+    public lookupGroupForPositionId(id: number) {
+        for (let group of this.positionGroups()) {
+            for (let wpt of group.positions()) {
                 if (wpt.id == id) {
                     return group;
                 }

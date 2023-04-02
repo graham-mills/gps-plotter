@@ -1,4 +1,4 @@
-# Waypoint Plotter
+# GPS Plotter
 
 Static single page application for plotting geographic coordinates on a map.
 
@@ -9,3 +9,5 @@ Built primarily using:
 * [Leaflet](https://leafletjs.com/) for the map with tiles served by [Mapbox](https://www.mapbox.com/)
 * [Bootstrap](https://getbootstrap.com/) and [FontAwesome](https://fontawesome.com/) for the CSS
 * [Browserify](https://browserify.org/) for web bundling
+
+Deployed as a GitHub page [here](https://graham-mills.github.io/gps-plotter/)

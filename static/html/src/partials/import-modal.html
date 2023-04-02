@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Import waypoints from CSV</h5>
+        <h5 class="modal-title">Import positions from CSV</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <!-- Lat/long number format -->
@@ -43,7 +43,7 @@
             <input
               type="text"
               class="form-control"
-              id="waypoint-input-lat-col-name"
+              id="position-input-lat-col-name"
               placeholder="latitude"
               data-bind="textInput: formData.latitudeColName"
             />
@@ -56,7 +56,7 @@
             <input
               type="text"
               class="form-control"
-              id="waypoint-input-long-col-name"
+              id="position-input-long-col-name"
               placeholder="longitude"
               data-bind="textInput: formData.longitudeColName"
             />
@@ -64,13 +64,13 @@
         </div>
         <!-- CSV entry -->
         <div class="row mb-2">
-          <label for="waypoint-input" class="col-sm-2 col-form-label col-form-label-sm"
+          <label for="position-input" class="col-sm-2 col-form-label col-form-label-sm"
             ><b>CSV Data</b></label
           >
           <div class="col-sm-10">
             <textarea
               class="form-control"
-              id="waypoint-input"
+              id="position-input"
               rows="3"
               placeholder="48.858093, 2.294694"
               data-bind="textInput: formData.importText, attr: { 'placeholder': formData.importTextPlaceholder}"
@@ -85,7 +85,7 @@
               <option value="0" selected>Add as a new group</option>
               <optgroup
                 label="Add to an existing group:"
-                data-bind="foreach: { data: model.waypointGroups, as: 'group'}"
+                data-bind="foreach: { data: model.positionGroups, as: 'group'}"
               >
                 <option data-bind="value: group.id, text: 'Add to ' + group.name()"></option>
               </optgroup>
@@ -103,7 +103,7 @@
                 class="form-check-input"
                 type="checkbox"
                 data-bind="checked: formData.enableDownsampling"
-                id="waypoint-input-filter-sample-size"
+                id="position-input-filter-sample-size"
               />
             </div>
           </div>
@@ -115,7 +115,7 @@
             <input
               type="number"
               class=""
-              id="waypoint-input-sample-size"
+              id="position-input-sample-size"
               placeholder="2"
               data-bind="textInput: formData.filterSampleSize"
               min="2"
@@ -139,8 +139,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-bind="click: importWaypoints">
-          Import Waypoints
+        <button type="button" class="btn btn-primary" data-bind="click: importPositions">
+          Import Positions
         </button>
       </div>
     </div>

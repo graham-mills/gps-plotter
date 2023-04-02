@@ -1,38 +1,38 @@
 import * as L from "leaflet";
 import { AppConfig } from "../config";
-import { Waypoint } from "../model/waypoint";
-import { WaypointGroup } from "../model/waypoint_group";
+import { Position } from "../model/position";
+import { PositionGroup } from "../model/position_group";
 
 export interface MapInterface {
-    /** Add map marker for waypoint. This will also adds the marker to the waypoint group's polyline. */
-    addWaypoint(waypoint: Waypoint): void;
+    /** Add map marker for position. This will also adds the marker to the position group's polyline. */
+    addPosition(position: Position): void;
 
-    /** Add map markers for each waypoint in group. This will also create a polyline connecting all waypoints in the group. */
-    addWaypointGroup(group: WaypointGroup): void;
+    /** Add map markers for each position in group. This will also create a polyline connecting all positions in the group. */
+    addPositionGroup(group: PositionGroup): void;
 
-    /** Remove marker for waypoint. This will also remove marker from group's polyline. */
-    removeWaypoint(waypoint: Waypoint): void;
+    /** Remove marker for position. This will also remove marker from group's polyline. */
+    removePosition(position: Position): void;
 
-    /** Remove map markers for each waypoint in group. This will also remove the waypoint group's polyline. */
-    removeWaypointGroup(group: WaypointGroup): void;
+    /** Remove map markers for each position in group. This will also remove the position group's polyline. */
+    removePositionGroup(group: PositionGroup): void;
 
-    /** Pan to (center on) a waypoint */
-    focusOnWaypoint(waypoint: Waypoint): void;
+    /** Pan to (center on) a position */
+    focusOnPosition(position: Position): void;
 
-    /** Pan to (center on) a waypoint group */
-    focusOnWaypointGroup(group: WaypointGroup): void;
+    /** Pan to (center on) a position group */
+    focusOnPositionGroup(group: PositionGroup): void;
 
-    /** Visually highlight the corresponding map marker for the selected waypoint */
-    waypointSelected(waypoint: Waypoint): void;
+    /** Visually highlight the corresponding map marker for the selected position */
+    positionSelected(position: Position): void;
 
-    /** Remove any visual highlight from the corresponding map marker for the deselected waypoint */
-    waypointDeselected(waypoint: Waypoint): void;
+    /** Remove any visual highlight from the corresponding map marker for the deselected position */
+    positionDeselected(position: Position): void;
 
     /** Visually highlight the corresponding polyline for the selected group */
-    waypointGroupSelected(group: WaypointGroup): void;
+    positionGroupSelected(group: PositionGroup): void;
 
     /** Remove any visual highlight from the group's polyline */
-    waypointGroupDeselected(group: WaypointGroup): void;
+    positionGroupDeselected(group: PositionGroup): void;
 
     /** Obtain lat/lng of center of view */
     getCenterLatLng(): [lat: number, lng: number];

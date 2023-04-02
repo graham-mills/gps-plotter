@@ -1,5 +1,5 @@
-import { Waypoint } from "./model/waypoint";
-import { WaypointGroup } from "./model/waypoint_group";
+import { Position } from "./model/position";
+import { PositionGroup } from "./model/position_group";
 
 // #region events
 
@@ -8,143 +8,143 @@ export class AppInitialisedEvent {
     constructor() {}
 }
 
-/** Add new waypoint to model */
-export class AddWaypointEvent {
+/** Add new position to model */
+export class AddPositionEvent {
     constructor(
-        public waypoint: Waypoint,
+        public position: Position,
         public groupId: number,
         public atIndex: Optional<number> = null
     ) {}
 }
 
-/** Remove waypoint from model */
-export class RemoveWaypointEvent {
-    constructor(public waypointId: number) {}
+/** Remove position from model */
+export class RemovePositionEvent {
+    constructor(public positionId: number) {}
 }
 
-/** Add waypoint group to model */
-export class AddWaypointGroupEvent {
-    constructor(public waypointGroup: WaypointGroup) {}
+/** Add position group to model */
+export class AddPositionGroupEvent {
+    constructor(public positionGroup: PositionGroup) {}
 }
 
-/** Remove waypoint group from model */
-export class RemoveWaypointGroupEvent {
-    constructor(public waypointGroupId: number) {}
+/** Remove position group from model */
+export class RemovePositionGroupEvent {
+    constructor(public positionGroupId: number) {}
 }
 
-/** Make waypoint group visible on map */
-export class ShowWaypointGroupEvent {
-    constructor(public waypointGroup: WaypointGroup) {}
+/** Make position group visible on map */
+export class ShowPositionGroupEvent {
+    constructor(public positionGroup: PositionGroup) {}
 }
 
-/** Hide waypoint group from map */
-export class HideWaypointGroupEvent {
-    constructor(public waypointGroup: WaypointGroup) {}
+/** Hide position group from map */
+export class HidePositionGroupEvent {
+    constructor(public positionGroup: PositionGroup) {}
 }
 
-/** Updates waypoint */
-export class UpdateWaypointEvent {
-    constructor(public updatedWaypoint: Waypoint) {}
+/** Updates position */
+export class UpdatePositionEvent {
+    constructor(public updatedPosition: Position) {}
 }
 
-/** Updates waypoint group */
-export class UpdateWaypointGroupEvent {
-    constructor(public updatedGroup: WaypointGroup) {}
+/** Updates position group */
+export class UpdatePositionGroupEvent {
+    constructor(public updatedGroup: PositionGroup) {}
 }
 
-/** Waypoint updated in model */
-export class WaypointUpdatedEvent {
-    constructor(public waypoint: Waypoint) {}
+/** Position updated in model */
+export class PositionUpdatedEvent {
+    constructor(public position: Position) {}
 }
 
-/** Waypoint group updated in model */
-export class WaypointGroupUpdatedEvent {
-    constructor(public waypointGroup: WaypointGroup) {}
+/** Position group updated in model */
+export class PositionGroupUpdatedEvent {
+    constructor(public positionGroup: PositionGroup) {}
 }
 
-/** Waypoint sorted (moved group and/or changed index) */
-export class WaypointSortedEvent {
-    waypointMovedGroups: boolean = false;
+/** Position sorted (moved group and/or changed index) */
+export class PositionSortedEvent {
+    positionMovedGroups: boolean = false;
 
     constructor(
-        public waypoint: Waypoint,
-        public previousGroup: WaypointGroup,
+        public position: Position,
+        public previousGroup: PositionGroup,
         public previousIndex: number,
-        public currentGroup: WaypointGroup,
+        public currentGroup: PositionGroup,
         public currentIndex: number
     ) {
-        this.waypointMovedGroups = previousGroup.id != currentGroup.id;
+        this.positionMovedGroups = previousGroup.id != currentGroup.id;
     }
 }
 
-/** Waypoint has been added to the model */
-export class WaypointAddedEvent {
-    constructor(public waypoint: Waypoint) {}
+/** Position has been added to the model */
+export class PositionAddedEvent {
+    constructor(public position: Position) {}
 }
 
-/** Waypoint has been removed from the model */
-export class WaypointRemovedEvent {
-    constructor(public waypoint: Waypoint) {}
+/** Position has been removed from the model */
+export class PositionRemovedEvent {
+    constructor(public position: Position) {}
 }
 
-/** Waypoint group has been added to the model */
-export class WaypointGroupAddedEvent {
-    constructor(public group: WaypointGroup) {}
+/** Position group has been added to the model */
+export class PositionGroupAddedEvent {
+    constructor(public group: PositionGroup) {}
 }
 
-/** Waypoint group has been removed from the model */
-export class WaypointGroupRemovedEvent {
-    constructor(public group: WaypointGroup) {}
+/** Position group has been removed from the model */
+export class PositionGroupRemovedEvent {
+    constructor(public group: PositionGroup) {}
 }
 
-/** HTML for waypoint group has been rendered */
-export class WaypointGroupHtmlRenderedEvent {
+/** HTML for position group has been rendered */
+export class PositionGroupHtmlRenderedEvent {
     constructor(public groupId: number) {}
 }
 
-/** Waypoint selected by user */
-export class WaypointSelectedEvent {
-    constructor(public waypoint: Waypoint) {}
+/** Position selected by user */
+export class PositionSelectedEvent {
+    constructor(public position: Position) {}
 }
 
-/** Waypoint group selected by user */
-export class WaypointGroupSelectedEvent {
-    constructor(public waypointGroup: WaypointGroup) {}
+/** Position group selected by user */
+export class PositionGroupSelectedEvent {
+    constructor(public positionGroup: PositionGroup) {}
 }
 
-/** Waypoint de-selected by user */
-export class WaypointDeselectedEvent {
-    constructor(public waypoint: Waypoint) {}
+/** Position de-selected by user */
+export class PositionDeselectedEvent {
+    constructor(public position: Position) {}
 }
 
-/** Waypoint group de-selected by user */
-export class WaypointGroupDeselectedEvent {
-    constructor(public waypointGroup: WaypointGroup) {}
+/** Position group de-selected by user */
+export class PositionGroupDeselectedEvent {
+    constructor(public positionGroup: PositionGroup) {}
 }
 
 // #endregion events
 
 export type EventType =
-    | AddWaypointEvent
-    | RemoveWaypointEvent
-    | AddWaypointGroupEvent
-    | RemoveWaypointGroupEvent
-    | ShowWaypointGroupEvent
-    | HideWaypointGroupEvent
-    | UpdateWaypointEvent
-    | UpdateWaypointGroupEvent
-    | WaypointUpdatedEvent
-    | WaypointGroupUpdatedEvent
-    | WaypointSortedEvent
-    | WaypointAddedEvent
-    | WaypointRemovedEvent
-    | WaypointGroupAddedEvent
-    | WaypointGroupRemovedEvent
-    | WaypointGroupHtmlRenderedEvent
-    | WaypointSelectedEvent
-    | WaypointGroupSelectedEvent
-    | WaypointDeselectedEvent
-    | WaypointGroupDeselectedEvent
+    | AddPositionEvent
+    | RemovePositionEvent
+    | AddPositionGroupEvent
+    | RemovePositionGroupEvent
+    | ShowPositionGroupEvent
+    | HidePositionGroupEvent
+    | UpdatePositionEvent
+    | UpdatePositionGroupEvent
+    | PositionUpdatedEvent
+    | PositionGroupUpdatedEvent
+    | PositionSortedEvent
+    | PositionAddedEvent
+    | PositionRemovedEvent
+    | PositionGroupAddedEvent
+    | PositionGroupRemovedEvent
+    | PositionGroupHtmlRenderedEvent
+    | PositionSelectedEvent
+    | PositionGroupSelectedEvent
+    | PositionDeselectedEvent
+    | PositionGroupDeselectedEvent
     | AppInitialisedEvent;
 
 type Callback<T> = (event: T) => void;
@@ -186,119 +186,119 @@ export class EventBus {
         let pub = this.getPublisher<AppInitialisedEvent>("AppInitialisedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToAddWaypointEvent(callback: Callback<AddWaypointEvent>) {
-        let pub = this.getPublisher<AddWaypointEvent>("AddWaypointEvent");
+    public subscribeToAddPositionEvent(callback: Callback<AddPositionEvent>) {
+        let pub = this.getPublisher<AddPositionEvent>("AddPositionEvent");
         pub.subscribe(callback);
     }
-    public subscribeToRemoveWaypointEvent(callback: Callback<RemoveWaypointEvent>) {
-        let pub = this.getPublisher<RemoveWaypointEvent>("RemoveWaypointEvent");
+    public subscribeToRemovePositionEvent(callback: Callback<RemovePositionEvent>) {
+        let pub = this.getPublisher<RemovePositionEvent>("RemovePositionEvent");
         pub.subscribe(callback);
     }
-    public subscribeToAddWaypointGroupEvent(callback: Callback<AddWaypointGroupEvent>) {
-        let pub = this.getPublisher<AddWaypointGroupEvent>("AddWaypointGroupEvent");
+    public subscribeToAddPositionGroupEvent(callback: Callback<AddPositionGroupEvent>) {
+        let pub = this.getPublisher<AddPositionGroupEvent>("AddPositionGroupEvent");
         pub.subscribe(callback);
     }
-    public subscribeToRemoveWaypointGroupEvent(
-        callback: Callback<RemoveWaypointGroupEvent>
+    public subscribeToRemovePositionGroupEvent(
+        callback: Callback<RemovePositionGroupEvent>
     ) {
-        let pub = this.getPublisher<RemoveWaypointGroupEvent>(
-            "RemoveWaypointGroupEvent"
+        let pub = this.getPublisher<RemovePositionGroupEvent>(
+            "RemovePositionGroupEvent"
         );
         pub.subscribe(callback);
     }
-    public subscribeToHideWaypointGroupEvent(
-        callback: Callback<HideWaypointGroupEvent>
+    public subscribeToHidePositionGroupEvent(
+        callback: Callback<HidePositionGroupEvent>
     ) {
-        let pub = this.getPublisher<HideWaypointGroupEvent>("HideWaypointGroupEvent");
+        let pub = this.getPublisher<HidePositionGroupEvent>("HidePositionGroupEvent");
         pub.subscribe(callback);
     }
-    public subscribeToShowWaypointGroupEvent(
-        callback: Callback<ShowWaypointGroupEvent>
+    public subscribeToShowPositionGroupEvent(
+        callback: Callback<ShowPositionGroupEvent>
     ) {
-        let pub = this.getPublisher<ShowWaypointGroupEvent>("ShowWaypointGroupEvent");
+        let pub = this.getPublisher<ShowPositionGroupEvent>("ShowPositionGroupEvent");
         pub.subscribe(callback);
     }
-    public subscribeToUpdateWaypointEvent(callback: Callback<UpdateWaypointEvent>) {
-        let pub = this.getPublisher<UpdateWaypointEvent>("UpdateWaypointEvent");
+    public subscribeToUpdatePositionEvent(callback: Callback<UpdatePositionEvent>) {
+        let pub = this.getPublisher<UpdatePositionEvent>("UpdatePositionEvent");
         pub.subscribe(callback);
     }
-    public subscribeToUpdateWaypointGroupEvent(
-        callback: Callback<UpdateWaypointGroupEvent>
+    public subscribeToUpdatePositionGroupEvent(
+        callback: Callback<UpdatePositionGroupEvent>
     ) {
-        let pub = this.getPublisher<UpdateWaypointGroupEvent>(
-            "UpdateWaypointGroupEvent"
+        let pub = this.getPublisher<UpdatePositionGroupEvent>(
+            "UpdatePositionGroupEvent"
         );
         pub.subscribe(callback);
     }
-    public subscribeToWaypointUpdatedEvent(callback: Callback<WaypointUpdatedEvent>) {
-        let pub = this.getPublisher<WaypointUpdatedEvent>("WaypointUpdatedEvent");
+    public subscribeToPositionUpdatedEvent(callback: Callback<PositionUpdatedEvent>) {
+        let pub = this.getPublisher<PositionUpdatedEvent>("PositionUpdatedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToWaypointGroupUpdatedEvent(
-        callback: Callback<WaypointGroupUpdatedEvent>
+    public subscribeToPositionGroupUpdatedEvent(
+        callback: Callback<PositionGroupUpdatedEvent>
     ) {
-        let pub = this.getPublisher<WaypointGroupUpdatedEvent>(
-            "WaypointGroupUpdatedEvent"
+        let pub = this.getPublisher<PositionGroupUpdatedEvent>(
+            "PositionGroupUpdatedEvent"
         );
         pub.subscribe(callback);
     }
-    public subscribeToWaypointSortedEvent(callback: Callback<WaypointSortedEvent>) {
-        let pub = this.getPublisher<WaypointSortedEvent>("WaypointSortedEvent");
+    public subscribeToPositionSortedEvent(callback: Callback<PositionSortedEvent>) {
+        let pub = this.getPublisher<PositionSortedEvent>("PositionSortedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToWaypointAddedEvent(callback: Callback<WaypointAddedEvent>) {
-        let pub = this.getPublisher<WaypointAddedEvent>("WaypointAddedEvent");
+    public subscribeToPositionAddedEvent(callback: Callback<PositionAddedEvent>) {
+        let pub = this.getPublisher<PositionAddedEvent>("PositionAddedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToWaypointRemovedEvent(callback: Callback<WaypointRemovedEvent>) {
-        let pub = this.getPublisher<WaypointRemovedEvent>("WaypointRemovedEvent");
+    public subscribeToPositionRemovedEvent(callback: Callback<PositionRemovedEvent>) {
+        let pub = this.getPublisher<PositionRemovedEvent>("PositionRemovedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToWaypointGroupAddedEvent(
-        callback: Callback<WaypointGroupAddedEvent>
+    public subscribeToPositionGroupAddedEvent(
+        callback: Callback<PositionGroupAddedEvent>
     ) {
-        let pub = this.getPublisher<WaypointGroupAddedEvent>("WaypointGroupAddedEvent");
+        let pub = this.getPublisher<PositionGroupAddedEvent>("PositionGroupAddedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToWaypointGroupRemovedEvent(
-        callback: Callback<WaypointGroupRemovedEvent>
+    public subscribeToPositionGroupRemovedEvent(
+        callback: Callback<PositionGroupRemovedEvent>
     ) {
-        let pub = this.getPublisher<WaypointGroupRemovedEvent>(
-            "WaypointGroupRemovedEvent"
+        let pub = this.getPublisher<PositionGroupRemovedEvent>(
+            "PositionGroupRemovedEvent"
         );
         pub.subscribe(callback);
     }
-    public subscribeToWaypointGroupHtmlRenderedEvent(
-        callback: Callback<WaypointGroupHtmlRenderedEvent>
+    public subscribeToPositionGroupHtmlRenderedEvent(
+        callback: Callback<PositionGroupHtmlRenderedEvent>
     ) {
-        let pub = this.getPublisher<WaypointGroupHtmlRenderedEvent>(
-            "WaypointGroupHtmlRenderedEvent"
+        let pub = this.getPublisher<PositionGroupHtmlRenderedEvent>(
+            "PositionGroupHtmlRenderedEvent"
         );
         pub.subscribe(callback);
     }
-    public subscribeToWaypointSelectedEvent(callback: Callback<WaypointSelectedEvent>) {
-        let pub = this.getPublisher<WaypointSelectedEvent>("WaypointSelectedEvent");
+    public subscribeToPositionSelectedEvent(callback: Callback<PositionSelectedEvent>) {
+        let pub = this.getPublisher<PositionSelectedEvent>("PositionSelectedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToWaypointGroupSelectedEvent(
-        callback: Callback<WaypointGroupSelectedEvent>
+    public subscribeToPositionGroupSelectedEvent(
+        callback: Callback<PositionGroupSelectedEvent>
     ) {
-        let pub = this.getPublisher<WaypointGroupSelectedEvent>(
-            "WaypointGroupSelectedEvent"
+        let pub = this.getPublisher<PositionGroupSelectedEvent>(
+            "PositionGroupSelectedEvent"
         );
         pub.subscribe(callback);
     }
-    public subscribeToWaypointDeselectedEvent(
-        callback: Callback<WaypointDeselectedEvent>
+    public subscribeToPositionDeselectedEvent(
+        callback: Callback<PositionDeselectedEvent>
     ) {
-        let pub = this.getPublisher<WaypointDeselectedEvent>("WaypointDeselectedEvent");
+        let pub = this.getPublisher<PositionDeselectedEvent>("PositionDeselectedEvent");
         pub.subscribe(callback);
     }
-    public subscribeToWaypointGroupDeselectedEvent(
-        callback: Callback<WaypointGroupDeselectedEvent>
+    public subscribeToPositionGroupDeselectedEvent(
+        callback: Callback<PositionGroupDeselectedEvent>
     ) {
-        let pub = this.getPublisher<WaypointGroupDeselectedEvent>(
-            "WaypointGroupDeselectedEvent"
+        let pub = this.getPublisher<PositionGroupDeselectedEvent>(
+            "PositionGroupDeselectedEvent"
         );
         pub.subscribe(callback);
     }

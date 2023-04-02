@@ -1,54 +1,53 @@
 import { AppConfig } from "../config";
 import {
     EventBus,
-    AddWaypointEvent,
-    AddWaypointGroupEvent,
-    RemoveWaypointGroupEvent,
-    WaypointGroupAddedEvent,
-    WaypointGroupRemovedEvent,
-    WaypointGroupSelectedEvent,
-    WaypointGroupDeselectedEvent,
-    WaypointSelectedEvent,
-    WaypointDeselectedEvent,
+    AddPositionEvent,
+    AddPositionGroupEvent,
+    RemovePositionGroupEvent,
+    PositionGroupAddedEvent,
+    PositionGroupRemovedEvent,
+    PositionGroupSelectedEvent,
+    PositionGroupDeselectedEvent,
+    PositionSelectedEvent,
+    PositionDeselectedEvent,
 } from "../events";
 import * as ko from "knockout";
-import { WaypointGroup } from "../model/waypoint_group";
-import { Waypoint } from "../model/waypoint";
-import { MapInterface } from "../map/map_interface";
+import { PositionGroup } from "../model/position_group";
 import { Position } from "../model/position";
+import { MapInterface } from "../map/map_interface";
 
 /** View Model for the HTML component `#controls` */
 export class ControlsViewModel {
     eventBus: EventBus;
     map: MapInterface;
-    waypointGroupIds: Set<number>;
-    selectedGroup: Optional<WaypointGroup>;
-    selectedWaypoint: Optional<Waypoint>;
+    positionGroupIds: Set<number>;
+    selectedGroup: Optional<PositionGroup>;
+    selectedPosition: Optional<Position>;
 
     constructor(eventBus: EventBus, map: MapInterface) {
         this.eventBus = eventBus;
         this.map = map;
-        this.waypointGroupIds = new Set();
+        this.positionGroupIds = new Set();
         this.selectedGroup = null;
-        this.selectedWaypoint = null;
+        this.selectedPosition = null;
 
-        eventBus.subscribeToWaypointGroupAddedEvent(
-            this.handleWaypointGroupAdded.bind(this)
+        eventBus.subscribeToPositionGroupAddedEvent(
+            this.handlePositionGroupAdded.bind(this)
         );
-        eventBus.subscribeToWaypointGroupRemovedEvent(
-            this.handleWaypointGroupRemoved.bind(this)
+        eventBus.subscribeToPositionGroupRemovedEvent(
+            this.handlePositionGroupRemoved.bind(this)
         );
-        eventBus.subscribeToWaypointGroupSelectedEvent(
-            this.handleWaypointGroupSelected.bind(this)
+        eventBus.subscribeToPositionGroupSelectedEvent(
+            this.handlePositionGroupSelected.bind(this)
         );
-        eventBus.subscribeToWaypointSelectedEvent(
-            this.handleWaypointSelected.bind(this)
+        eventBus.subscribeToPositionSelectedEvent(
+            this.handlePositionSelected.bind(this)
         );
-        eventBus.subscribeToWaypointGroupDeselectedEvent(
-            this.handleWaypointGroupDeselected.bind(this)
+        eventBus.subscribeToPositionGroupDeselectedEvent(
+            this.handlePositionGroupDeselected.bind(this)
         );
-        eventBus.subscribeToWaypointDeselectedEvent(
-            this.handleWaypointDeselected.bind(this)
+        eventBus.subscribeToPositionDeselectedEvent(
+            this.handlePositionDeselected.bind(this)
         );
 
         ko.applyBindings(this, document.getElementById(AppConfig.DOMSymbols.Controls));
@@ -60,28 +59,28 @@ export class ControlsViewModel {
 
     // #region Internal Event Handlers
 
-    private handleWaypointGroupAdded(event: WaypointGroupAddedEvent): void {
-        this.waypointGroupIds.add(event.group.id);
+    private handlePositionGroupAdded(event: PositionGroupAddedEvent): void {
+        this.positionGroupIds.add(event.group.id);
     }
 
-    private handleWaypointGroupRemoved(event: WaypointGroupRemovedEvent) {
-        this.waypointGroupIds.delete(event.group.id);
+    private handlePositionGroupRemoved(event: PositionGroupRemovedEvent) {
+        this.positionGroupIds.delete(event.group.id);
     }
 
-    private handleWaypointGroupSelected(event: WaypointGroupSelectedEvent) {
-        this.selectedGroup = event.waypointGroup;
+    private handlePositionGroupSelected(event: PositionGroupSelectedEvent) {
+        this.selectedGroup = event.positionGroup;
     }
 
-    private handleWaypointGroupDeselected(event: WaypointGroupDeselectedEvent) {
+    private handlePositionGroupDeselected(event: PositionGroupDeselectedEvent) {
         this.selectedGroup = null;
     }
 
-    private handleWaypointSelected(event: WaypointSelectedEvent) {
-        this.selectedWaypoint = event.waypoint;
+    private handlePositionSelected(event: PositionSelectedEvent) {
+        this.selectedPosition = event.position;
     }
 
-    private handleWaypointDeselected(event: WaypointDeselectedEvent) {
-        this.selectedWaypoint = null;
+    private handlePositionDeselected(event: PositionDeselectedEvent) {
+        this.selectedPosition = null;
     }
 
     // #endregion
@@ -89,64 +88,58 @@ export class ControlsViewModel {
     // #region Knockout Bound Methods
 
     private addEmptyGroup() {
-        const group = WaypointGroup.makeUnique();
-        this.eventBus.publish(new AddWaypointGroupEvent(group));
-        this.eventBus.publish(new WaypointGroupSelectedEvent(group));
+        const group = PositionGroup.makeUnique();
+        this.eventBus.publish(new AddPositionGroupEvent(group));
+        this.eventBus.publish(new PositionGroupSelectedEvent(group));
     }
 
-    private addWaypoint() {
-        if (this.selectedWaypoint) {
-            this.addWaypointAfterWaypoint(this.selectedWaypoint);
+    private addPosition() {
+        if (this.selectedPosition) {
+            this.addPositionAfterPosition(this.selectedPosition);
         } else if (this.selectedGroup) {
-            this.addWaypointToEndOfGroup(this.selectedGroup);
+            this.addPositionToEndOfGroup(this.selectedGroup);
         } else {
             this.addEmptyGroup();
-            this.addWaypointToEndOfGroup(this.selectedGroup!);
+            this.addPositionToEndOfGroup(this.selectedGroup!);
         }
     }
 
     private deleteAllGroups() {
-        this.waypointGroupIds.forEach((id: number) => {
-            this.eventBus.publish(new RemoveWaypointGroupEvent(id));
+        this.positionGroupIds.forEach((id: number) => {
+            this.eventBus.publish(new RemovePositionGroupEvent(id));
         });
     }
 
     // #endregion
 
-    private addWaypointAfterWaypoint(prevWaypoint: Waypoint) {
-        // Move new waypoint's position slightly to not sit on-top of previous waypoint
-        const newWaypoint = Waypoint.makeUnique(
-            new Position(
-                prevWaypoint.position().latitude() +
-                    AppConfig.Model.NewWaypointPositionOffset,
-                prevWaypoint.position().longitude() +
-                    AppConfig.Model.NewWaypointPositionOffset
-            )
+    private addPositionAfterPosition(prevPosition: Position) {
+        // Move new position's position slightly to not sit on-top of previous position
+        const newPosition = Position.makeUnique(
+            prevPosition.latitude() + AppConfig.Model.NewPositionPositionOffset,
+            prevPosition.longitude() + AppConfig.Model.NewPositionPositionOffset
         );
-        const prevWaypointIdx = prevWaypoint.group!.waypoints().indexOf(prevWaypoint);
+        const prevPositionIdx = prevPosition.group!.positions().indexOf(prevPosition);
         this.eventBus.publish(
-            new AddWaypointEvent(
-                newWaypoint,
-                prevWaypoint.group!.id,
-                prevWaypointIdx + 1
+            new AddPositionEvent(
+                newPosition,
+                prevPosition.group!.id,
+                prevPositionIdx + 1
             )
         );
-        this.eventBus.publish(new WaypointSelectedEvent(newWaypoint));
+        this.eventBus.publish(new PositionSelectedEvent(newPosition));
     }
 
-    private addWaypointToEndOfGroup(waypointGroup: WaypointGroup) {
-        const waypointsLength = waypointGroup.waypoints().length;
-        if (waypointsLength > 0) {
-            this.addWaypointAfterWaypoint(
-                waypointGroup.waypoints().at(waypointsLength - 1)!
+    private addPositionToEndOfGroup(positionGroup: PositionGroup) {
+        const positionsLength = positionGroup.positions().length;
+        if (positionsLength > 0) {
+            this.addPositionAfterPosition(
+                positionGroup.positions().at(positionsLength - 1)!
             );
         } else {
             const mapCenter = this.map.getCenterLatLng();
-            const newWaypoint = Waypoint.makeUnique(
-                new Position(mapCenter[0], mapCenter[1])
-            );
-            this.eventBus.publish(new AddWaypointEvent(newWaypoint, waypointGroup.id));
-            this.eventBus.publish(new WaypointSelectedEvent(newWaypoint));
+            const newPosition = Position.makeUnique(mapCenter[0], mapCenter[1]);
+            this.eventBus.publish(new AddPositionEvent(newPosition, positionGroup.id));
+            this.eventBus.publish(new PositionSelectedEvent(newPosition));
         }
     }
 }

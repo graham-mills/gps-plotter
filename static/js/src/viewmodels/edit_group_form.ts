@@ -1,18 +1,18 @@
-import { WaypointGroup } from "../model/waypoint_group";
+import { PositionGroup } from "../model/position_group";
 import * as ko from "knockout";
 import {
     EventBus,
-    UpdateWaypointGroupEvent,
-    WaypointGroupDeselectedEvent,
-    WaypointGroupSelectedEvent,
+    UpdatePositionGroupEvent,
+    PositionGroupDeselectedEvent,
+    PositionGroupSelectedEvent,
 } from "../events";
 import { AppConfig } from "../config";
 
-/** View Model for the HTML component `#edit-waypoint-group-form` */
-export class EditWaypointGroupForm {
+/** View Model for the HTML component `#edit-position-group-form` */
+export class EditPositionGroupForm {
     eventBus: EventBus;
 
-    source: Optional<WaypointGroup> = null;
+    source: Optional<PositionGroup> = null;
     name: ko.Observable<string> = ko.observable("");
     drawPolyline: ko.Observable<boolean> = ko.observable(Boolean(false));
     showMarkers: ko.Observable<boolean> = ko.observable(Boolean(false));
@@ -23,11 +23,11 @@ export class EditWaypointGroupForm {
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;
 
-        eventBus.subscribeToWaypointGroupSelectedEvent(
-            this.handleWaypointGroupSelected.bind(this)
+        eventBus.subscribeToPositionGroupSelectedEvent(
+            this.handlePositionGroupSelected.bind(this)
         );
-        eventBus.subscribeToWaypointGroupDeselectedEvent(
-            this.handleWaypointGroupDeselected.bind(this)
+        eventBus.subscribeToPositionGroupDeselectedEvent(
+            this.handlePositionGroupDeselected.bind(this)
         );
 
         ko.applyBindings(
@@ -36,16 +36,16 @@ export class EditWaypointGroupForm {
         );
     }
 
-    private handleWaypointGroupSelected(event: WaypointGroupSelectedEvent) {
-        this.populate(event.waypointGroup);
+    private handlePositionGroupSelected(event: PositionGroupSelectedEvent) {
+        this.populate(event.positionGroup);
         this.showForm(true);
     }
 
-    private handleWaypointGroupDeselected(event: WaypointGroupDeselectedEvent) {
+    private handlePositionGroupDeselected(event: PositionGroupDeselectedEvent) {
         this.showForm(false);
     }
 
-    private populate(source: WaypointGroup) {
+    private populate(source: PositionGroup) {
         this.source = source;
         this.name(source.name());
         this.drawPolyline(source.drawPolyline());
@@ -68,6 +68,6 @@ export class EditWaypointGroupForm {
         updatedGroup.showMarkers(this.showMarkers());
         updatedGroup.showMarkerLabels(this.showMarkerLabels());
         updatedGroup.lineColor(this.lineColor());
-        this.eventBus.publish(new UpdateWaypointGroupEvent(updatedGroup));
+        this.eventBus.publish(new UpdatePositionGroupEvent(updatedGroup));
     }
 }

@@ -27,7 +27,7 @@
       type="button"
       class="btn btn-sm shadow-none"
       title="Toggle visibility"
-      data-bind="visible: group.visible, click: function(){ $root.hideWaypointGroup(group.id); }, clickBubble: false"
+      data-bind="visible: group.visible, click: function(){ $root.hidePositionGroup(group.id); }, clickBubble: false"
     >
       <i class="fa-solid fa-eye"></i>
     </button>
@@ -35,7 +35,7 @@
       type="button"
       class="btn btn-sm shadow-none"
       title="Toggle visibility"
-      data-bind="hidden: group.visible, click: function(){ $root.showWaypointGroup(group.id); }, clickBubble: false"
+      data-bind="hidden: group.visible, click: function(){ $root.showPositionGroup(group.id); }, clickBubble: false"
     >
       <i class="fa-solid fa-eye-slash"></i>
     </button>
@@ -44,7 +44,7 @@
   <div class="col-8"><b data-bind="text: group.name"></b></div>
   <!-- Position Count -->
   <div class="col-1">
-    <span data-bind="text: group.waypoints().length"></span>
+    <span data-bind="text: group.positions().length"></span>
     <i class="fa-solid fa-location-dot"></i>
   </div>
   <!-- Delete button -->
@@ -53,7 +53,7 @@
       type="button"
       class="btn btn-sm shadow-none"
       title="Delete group"
-      data-bind="click: function() { $root.deleteWaypointGroup(group.id); }, clickBubble: false"
+      data-bind="click: function() { $root.deletePositionGroup(group.id); }, clickBubble: false"
     >
       <i class="fa-solid fa-trash-can"></i>
     </button>

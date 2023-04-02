@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Waypoints</title>
+    <title>GPS Plotter</title>
     <link rel="icon" type="image/x-icon" href="static/img/location-dot-solid.svg" />
     <script
       type="text/javascript"
@@ -28,7 +28,7 @@
               <button
                 type="button"
                 class="btn btn-sm btn-primary shadow-none"
-                title="Add new waypoint group"
+                title="Add new position group"
                 data-bind="click: $root.addEmptyGroup"
               >
                 <i class="fa-solid fa-vector-square"></i>
@@ -37,16 +37,16 @@
               <button
                 type="button"
                 class="btn btn-sm btn-primary shadow-none"
-                title="Add new waypoint"
-                data-bind="click: $root.addWaypoint"
+                title="Add new position"
+                data-bind="click: $root.addPosition"
               >
                 <i class="fa-solid fa-location-dot"></i>
-                Add Waypoint
+                Add Position
               </button>
               <button
                 type="button"
                 class="btn btn-sm btn-primary shadow-none"
-                title="Import waypoints from CSV"
+                title="Import positions from CSV"
                 data-bs-toggle="modal"
                 data-bs-target="#import-modal"
               >
@@ -56,7 +56,7 @@
               <button
                 type="button"
                 class="btn btn-sm btn-primary shadow-none"
-                title="Export waypoints as CSV"
+                title="Export positions as CSV"
                 data-bs-toggle="modal"
                 data-bs-target="#export-modal"
               >
@@ -66,7 +66,7 @@
               <button
                 type="button"
                 class="btn btn-sm btn-danger shadow-none"
-                title="Remove all waypoints and waypoint groups"
+                title="Remove all positions and position groups"
                 data-bs-toggle="modal"
                 data-bs-target="#reset-modal"
               >
@@ -79,11 +79,11 @@
           <ul
             id="group-list"
             class="mb-1"
-            data-bind="foreach: { data: $root.model.waypointGroups, as: 'group'}"
+            data-bind="foreach: { data: $root.model.positionGroups, as: 'group'}"
           >
             <li
               class="group-list-item"
-              data-bind="childrenComplete: $root.waypointGroupHtmlRendered(group.id) "
+              data-bind="childrenComplete: $root.positionGroupHtmlRendered(group.id) "
             >
               <div
                 class="group-row row mx-auto no-gutter"
@@ -114,7 +114,7 @@
                     type="button"
                     class="btn btn-sm shadow-none"
                     title="Toggle visibility"
-                    data-bind="visible: group.visible, click: function(){ $root.hideWaypointGroup(group.id); }, clickBubble: false"
+                    data-bind="visible: group.visible, click: function(){ $root.hidePositionGroup(group.id); }, clickBubble: false"
                   >
                     <i class="fa-solid fa-eye"></i>
                   </button>
@@ -122,7 +122,7 @@
                     type="button"
                     class="btn btn-sm shadow-none"
                     title="Toggle visibility"
-                    data-bind="hidden: group.visible, click: function(){ $root.showWaypointGroup(group.id); }, clickBubble: false"
+                    data-bind="hidden: group.visible, click: function(){ $root.showPositionGroup(group.id); }, clickBubble: false"
                   >
                     <i class="fa-solid fa-eye-slash"></i>
                   </button>
@@ -131,7 +131,7 @@
                 <div class="col-8"><b data-bind="text: group.name"></b></div>
                 <!-- Position Count -->
                 <div class="col-1">
-                  <span data-bind="text: group.waypoints().length"></span>
+                  <span data-bind="text: group.positions().length"></span>
                   <i class="fa-solid fa-location-dot"></i>
                 </div>
                 <!-- Delete button -->
@@ -140,7 +140,7 @@
                     type="button"
                     class="btn btn-sm shadow-none"
                     title="Delete group"
-                    data-bind="click: function() { $root.deleteWaypointGroup(group.id); }, clickBubble: false"
+                    data-bind="click: function() { $root.deletePositionGroup(group.id); }, clickBubble: false"
                   >
                     <i class="fa-solid fa-trash-can"></i>
                   </button>
@@ -148,12 +148,12 @@
               </div>
               
               <ul
-                class="waypoint-list"
-                data-bind="foreach: { data: group.waypoints, as: 'waypoint'}, attr: {'id': 'waypoint-list-' + group.id}, hidden: group.collapsed"
+                class="position-list"
+                data-bind="foreach: { data: group.positions, as: 'position'}, attr: {'id': 'position-list-' + group.id}, hidden: group.collapsed"
               >
                 <li
-                  class="waypoint-row row no-gutter"
-                  data-bind="click: function() { $root.selectWaypointById(waypoint.id); }, css: { selected: waypoint.selected }, attr: {id: `waypoint-row-` + waypoint.id}"
+                  class="position-row row no-gutter"
+                  data-bind="click: function() { $root.selectPositionById(position.id); }, css: { selected: position.selected }, attr: {id: `position-row-` + position.id}"
                 >
                   <!-- Spacer -->
                   <div class="col"></div>
@@ -166,8 +166,8 @@
                   <!-- Name, Position -->
                   <div class="col-9">
                     <div class="row">
-                      <span class="col-4" data-bind="text: waypoint.name"></span>
-                      <span class="col-8" data-bind="text: waypoint.position().toString()"></span>
+                      <span class="col-4" data-bind="text: position.name"></span>
+                      <span class="col-8" data-bind="text: position.latLongString()"></span>
                     </div>
                   </div>
                   <!-- Delete button -->
@@ -175,8 +175,8 @@
                     <button
                       type="button"
                       class="btn btn-sm shadow-none"
-                      title="Delete waypoint"
-                      data-bind="click: function() { $root.deleteWaypoint(waypoint.id); }, clickBubble: false"
+                      title="Delete position"
+                      data-bind="click: function() { $root.deletePosition(position.id); }, clickBubble: false"
                     >
                       <i class="fa-solid fa-trash-can"></i>
                     </button>
@@ -244,7 +244,7 @@
             </div>
           </div>
           
-          <div id="edit-waypoint-form" data-bind="if: $root.showForm">
+          <div id="edit-position-form" data-bind="if: $root.showForm">
             <div class="edit-form row mb-1">
               <div class="col">
                 <div class="mb-3">
@@ -284,7 +284,7 @@
         <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Import waypoints from CSV</h5>
+              <h5 class="modal-title">Import positions from CSV</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Lat/long number format -->
@@ -325,7 +325,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="waypoint-input-lat-col-name"
+                    id="position-input-lat-col-name"
                     placeholder="latitude"
                     data-bind="textInput: formData.latitudeColName"
                   />
@@ -338,7 +338,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="waypoint-input-long-col-name"
+                    id="position-input-long-col-name"
                     placeholder="longitude"
                     data-bind="textInput: formData.longitudeColName"
                   />
@@ -346,13 +346,13 @@
               </div>
               <!-- CSV entry -->
               <div class="row mb-2">
-                <label for="waypoint-input" class="col-sm-2 col-form-label col-form-label-sm"
+                <label for="position-input" class="col-sm-2 col-form-label col-form-label-sm"
                   ><b>CSV Data</b></label
                 >
                 <div class="col-sm-10">
                   <textarea
                     class="form-control"
-                    id="waypoint-input"
+                    id="position-input"
                     rows="3"
                     placeholder="48.858093, 2.294694"
                     data-bind="textInput: formData.importText, attr: { 'placeholder': formData.importTextPlaceholder}"
@@ -367,7 +367,7 @@
                     <option value="0" selected>Add as a new group</option>
                     <optgroup
                       label="Add to an existing group:"
-                      data-bind="foreach: { data: model.waypointGroups, as: 'group'}"
+                      data-bind="foreach: { data: model.positionGroups, as: 'group'}"
                     >
                       <option data-bind="value: group.id, text: 'Add to ' + group.name()"></option>
                     </optgroup>
@@ -385,7 +385,7 @@
                       class="form-check-input"
                       type="checkbox"
                       data-bind="checked: formData.enableDownsampling"
-                      id="waypoint-input-filter-sample-size"
+                      id="position-input-filter-sample-size"
                     />
                   </div>
                 </div>
@@ -397,7 +397,7 @@
                   <input
                     type="number"
                     class=""
-                    id="waypoint-input-sample-size"
+                    id="position-input-sample-size"
                     placeholder="2"
                     data-bind="textInput: formData.filterSampleSize"
                     min="2"
@@ -421,8 +421,8 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary" data-bind="click: importWaypoints">
-                Import Waypoints
+              <button type="button" class="btn btn-primary" data-bind="click: importPositions">
+                Import Positions
               </button>
             </div>
           </div>
@@ -433,7 +433,7 @@
         <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Export Waypoints</h5>
+              <h5 class="modal-title">Export Positions</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -465,7 +465,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
-              <p>This action will remove all waypoints and groups listed, are you sure?</p>
+              <p>This action will remove all positions and groups listed, are you sure?</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

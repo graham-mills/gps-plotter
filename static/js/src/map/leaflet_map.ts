@@ -1,18 +1,18 @@
-import { EventBus, WaypointSelectedEvent } from "../events";
+import { EventBus, PositionSelectedEvent } from "../events";
 import * as L from "leaflet";
 import { Model } from "../model/model";
 import { AppConfig } from "../config";
-import { Waypoint } from "../model/waypoint";
-import { WaypointGroup } from "../model/waypoint_group";
+import { Position } from "../model/position";
+import { PositionGroup } from "../model/position_group";
 import { MapInterface } from "./map_interface";
 
 export class LeafletMap implements MapInterface {
     eventBus: EventBus;
     model: Model;
     map: L.Map;
-    markers: Map<number, L.Marker>; // Maps WaypointId => Marker
-    layerGroups: Map<number, L.FeatureGroup>; // Maps WaypointGroupId => LayerGroup
-    lines: Map<number, L.Polyline>; // Maps WaypointGroupId => Polyline
+    markers: Map<number, L.Marker>; // Maps PositionId => Marker
+    layerGroups: Map<number, L.FeatureGroup>; // Maps PositionGroupId => LayerGroup
+    lines: Map<number, L.Polyline>; // Maps PositionGroupId => Polyline
 
     constructor(eventBus: EventBus, model: Model) {
         this.eventBus = eventBus;
@@ -26,90 +26,90 @@ export class LeafletMap implements MapInterface {
         this.initMap();
     }
     //#region public methods
-    addWaypoint(waypoint: Waypoint): void {
-        if (this.markers.has(waypoint.id)) {
-            console.error("Marker already exists for Waypoint " + waypoint.id);
+    addPosition(position: Position): void {
+        if (this.markers.has(position.id)) {
+            console.error("Marker already exists for Position " + position.id);
             return;
         }
 
-        const group = waypoint.group!;
+        const group = position.group!;
         if (group.showMarkers()) {
-            this.addWaypointMarker(waypoint, group);
+            this.addPositionMarker(position, group);
         }
 
         let polyline = this.lookupPolyline(group.id);
-        polyline?.addLatLng(this.latLngFromWaypoint(waypoint));
+        polyline?.addLatLng(this.latLngFromPosition(position));
         polyline?.redraw();
     }
-    addWaypointGroup(group: WaypointGroup): void {
+    addPositionGroup(group: PositionGroup): void {
         if (this.layerGroups.has(group.id)) {
-            console.error("LayerGroup already exists for WaypointGroup " + group.id);
+            console.error("LayerGroup already exists for PositionGroup " + group.id);
             return;
         }
 
-        this.addWaypointLayerGroup(group);
+        this.addPositionLayerGroup(group);
         if (group.showMarkers()) {
-            for (const waypoint of group.waypoints()) {
-                this.addWaypointMarker(waypoint, group);
+            for (const position of group.positions()) {
+                this.addPositionMarker(position, group);
             }
         }
         if (group.drawPolyline()) {
-            this.addWaypointGroupPolyline(group);
+            this.addPositionGroupPolyline(group);
         }
     }
-    removeWaypoint(waypoint: Waypoint) {
-        const waypointMarker = this.lookupMarker(waypoint.id);
-        if (!waypointMarker) return;
-        this.removeWaypointMarker(waypoint.id);
-        this.removeWaypointGroupPolyline(waypoint.group!.id);
-        if (waypoint.group!.drawPolyline()) {
-            this.addWaypointGroupPolyline(waypoint.group!);
+    removePosition(position: Position) {
+        const positionMarker = this.lookupMarker(position.id);
+        if (!positionMarker) return;
+        this.removePositionMarker(position.id);
+        this.removePositionGroupPolyline(position.group!.id);
+        if (position.group!.drawPolyline()) {
+            this.addPositionGroupPolyline(position.group!);
         }
     }
-    removeWaypointGroup(group: WaypointGroup) {
-        let waypointLayerGroup = this.lookupLayerGroup(group.id);
-        if (!waypointLayerGroup) return;
-        for (const waypoint of group.waypoints()) {
-            this.removeWaypointMarker(waypoint.id);
+    removePositionGroup(group: PositionGroup) {
+        let positionLayerGroup = this.lookupLayerGroup(group.id);
+        if (!positionLayerGroup) return;
+        for (const position of group.positions()) {
+            this.removePositionMarker(position.id);
         }
-        this.removeWaypointLayerGroup(group.id);
-        this.removeWaypointGroupPolyline(group.id);
+        this.removePositionLayerGroup(group.id);
+        this.removePositionGroupPolyline(group.id);
     }
-    focusOnWaypoint(waypoint: Waypoint) {
-        const waypointMarker = this.lookupMarker(waypoint.id);
+    focusOnPosition(position: Position) {
+        const positionMarker = this.lookupMarker(position.id);
 
-        if (!waypointMarker) return;
+        if (!positionMarker) return;
         let requestZoom = this.map.getZoom();
         if (requestZoom < AppConfig.Map.DefaultZoomLevel) {
             requestZoom = AppConfig.Map.DefaultZoomLevel;
         }
-        this.map.setView(waypointMarker.getLatLng(), requestZoom);
+        this.map.setView(positionMarker.getLatLng(), requestZoom);
     }
-    focusOnWaypointGroup(group: WaypointGroup) {
-        if (group.waypoints.length == 0) return;
+    focusOnPositionGroup(group: PositionGroup) {
+        if (group.positions.length == 0) return;
         const polyline = this.lookupPolyline(group.id);
         if (!polyline || polyline?.getLatLngs().length == 0) return;
         this.map.fitBounds(polyline.getBounds());
     }
-    waypointSelected(waypoint: Waypoint): void {
+    positionSelected(position: Position): void {
         // Add the selected class to the map marker div
-        const waypointMapMarkerDiv = document.getElementById(
-            "marker-" + waypoint.id.toString()
+        const positionMapMarkerDiv = document.getElementById(
+            "marker-" + position.id.toString()
         );
-        if (waypointMapMarkerDiv) {
-            waypointMapMarkerDiv.className = AppConfig.Map.SelectedMapMarkerClass;
+        if (positionMapMarkerDiv) {
+            positionMapMarkerDiv.className = AppConfig.Map.SelectedMapMarkerClass;
         }
     }
-    waypointDeselected(waypoint: Waypoint): void {
+    positionDeselected(position: Position): void {
         // Remove the selected class from the map marker div
-        const waypointMapMarker = document.getElementById(
-            "marker-" + waypoint.id.toString()
+        const positionMapMarker = document.getElementById(
+            "marker-" + position.id.toString()
         );
-        if (waypointMapMarker) {
-            waypointMapMarker.className = AppConfig.Map.MapMarkerClass;
+        if (positionMapMarker) {
+            positionMapMarker.className = AppConfig.Map.MapMarkerClass;
         }
     }
-    waypointGroupSelected(group: WaypointGroup): void {
+    positionGroupSelected(group: PositionGroup): void {
         const polyline = this.lookupPolyline(group.id);
         if (polyline) {
             polyline.setStyle({
@@ -118,7 +118,7 @@ export class LeafletMap implements MapInterface {
             });
         }
     }
-    waypointGroupDeselected(group: WaypointGroup): void {
+    positionGroupDeselected(group: PositionGroup): void {
         const polyline = this.lookupPolyline(group.id);
         if (polyline) {
             polyline.setStyle({
@@ -146,8 +146,8 @@ export class LeafletMap implements MapInterface {
             }
         ).addTo(this.map);
     }
-    private lookupMarker(waypointId: number): Optional<L.Marker> {
-        const marker = this.markers.get(waypointId);
+    private lookupMarker(positionId: number): Optional<L.Marker> {
+        const marker = this.markers.get(positionId);
         if (!marker) {
             return null;
         }
@@ -167,7 +167,7 @@ export class LeafletMap implements MapInterface {
         }
         return polyline;
     }
-    private addWaypointGroupPolyline(group: WaypointGroup): L.Polyline {
+    private addPositionGroupPolyline(group: PositionGroup): L.Polyline {
         const polyline = L.polyline([]);
         this.lookupLayerGroup(group.id)?.addLayer(polyline);
         this.lines.set(group.id, polyline);
@@ -177,70 +177,70 @@ export class LeafletMap implements MapInterface {
             weight: AppConfig.Map.DefaultPolylineWidth,
         });
 
-        // Set polyline points from waypoints
+        // Set polyline points from positions
         let latLngs: Array<L.LatLngExpression> = [];
-        for (const waypoint of group.waypoints()) {
-            latLngs.push(this.latLngFromWaypoint(waypoint));
+        for (const position of group.positions()) {
+            latLngs.push(this.latLngFromPosition(position));
         }
         polyline.setLatLngs(latLngs);
         return polyline;
     }
-    private addWaypointMarker(waypoint: Waypoint, group: WaypointGroup): L.Marker {
-        const marker = L.marker(this.latLngFromWaypoint(waypoint), {
-            title: waypoint.name(),
-            icon: this.markerIconForWaypoint(waypoint, group),
+    private addPositionMarker(position: Position, group: PositionGroup): L.Marker {
+        const marker = L.marker(this.latLngFromPosition(position), {
+            title: position.name(),
+            icon: this.markerIconForPosition(position, group),
         });
         this.lookupLayerGroup(group.id)!.addLayer(marker);
-        this.markers.set(waypoint.id, marker);
-        this.addWaypointMarkerClickHandler(waypoint);
+        this.markers.set(position.id, marker);
+        this.addPositionMarkerClickHandler(position);
         return marker;
     }
-    private addWaypointLayerGroup(waypointGroup: WaypointGroup): L.LayerGroup {
+    private addPositionLayerGroup(positionGroup: PositionGroup): L.LayerGroup {
         const layerGroup = new L.FeatureGroup([], {}).addTo(this.map);
-        this.layerGroups.set(waypointGroup.id, layerGroup);
+        this.layerGroups.set(positionGroup.id, layerGroup);
         return layerGroup;
     }
-    private removeWaypointMarker(waypointId: number) {
-        this.markers.get(waypointId)?.remove();
-        this.markers.delete(waypointId);
+    private removePositionMarker(positionId: number) {
+        this.markers.get(positionId)?.remove();
+        this.markers.delete(positionId);
     }
-    private removeWaypointLayerGroup(groupId: number) {
+    private removePositionLayerGroup(groupId: number) {
         this.layerGroups.get(groupId)?.clearLayers();
         this.layerGroups.get(groupId)?.remove();
         this.layerGroups.delete(groupId);
     }
-    private removeWaypointGroupPolyline(groupId: number) {
+    private removePositionGroupPolyline(groupId: number) {
         this.lines.get(groupId)?.remove();
         this.lines.delete(groupId);
     }
-    private latLngFromWaypoint(waypoint: Waypoint): L.LatLngExpression {
-        return [waypoint.position().latitude(), waypoint.position().longitude()];
+    private latLngFromPosition(position: Position): L.LatLngExpression {
+        return [position.latitude(), position.longitude()];
     }
-    private divIdFromWaypoint(waypoint: Waypoint): string {
-        return "marker-" + waypoint.id.toString();
+    private divIdFromPosition(position: Position): string {
+        return "marker-" + position.id.toString();
     }
-    private markerIconForWaypoint(waypoint: Waypoint, group: WaypointGroup) {
+    private markerIconForPosition(position: Position, group: PositionGroup) {
         let markerHtml = `<div id="${
-            AppConfig.Map.MapMarkerIdPrefix + waypoint.id.toString()
+            AppConfig.Map.MapMarkerIdPrefix + position.id.toString()
         }" class="${AppConfig.Map.MapMarkerClass}">`;
-        markerHtml += `<div class="waypoint-icon" style="background-color: ${group.lineColor()}"></div>`;
+        markerHtml += `<div class="position-icon" style="background-color: ${group.lineColor()}"></div>`;
         if (group.showMarkerLabels()) {
-            markerHtml += `<div class="waypoint-label">${waypoint.name()}</div>`;
+            markerHtml += `<div class="position-label">${position.name()}</div>`;
         }
         markerHtml += `</div>`;
         return L.divIcon({ html: markerHtml });
     }
-    private addWaypointMarkerClickHandler(waypoint: Waypoint) {
+    private addPositionMarkerClickHandler(position: Position) {
         let that = this;
         document
-            .getElementById(this.divIdFromWaypoint(waypoint))
+            .getElementById(this.divIdFromPosition(position))
             ?.addEventListener("click", function (event: MouseEvent) {
-                that.waypointMarkerClicked(waypoint.id);
+                that.positionMarkerClicked(position.id);
             });
     }
-    private waypointMarkerClicked(waypointId: number) {
+    private positionMarkerClicked(positionId: number) {
         this.eventBus.publish(
-            new WaypointSelectedEvent(this.model.lookupWaypointById(waypointId)!)
+            new PositionSelectedEvent(this.model.lookupPositionById(positionId)!)
         );
     }
 }

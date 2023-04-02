@@ -1,0 +1,36 @@
+<ul
+  class="position-list"
+  data-bind="foreach: { data: group.positions, as: 'position'}, attr: {'id': 'position-list-' + group.id}, hidden: group.collapsed"
+>
+  <li
+    class="position-row row no-gutter"
+    data-bind="click: function() { $root.selectPositionById(position.id); }, css: { selected: position.selected }, attr: {id: `position-row-` + position.id}"
+  >
+    <!-- Spacer -->
+    <div class="col"></div>
+    <!-- Drag Handle -->
+    <div class="col">
+      <button class="btn btn-sm handle" title="Re-order">
+        <i class="fa-solid fa-grip-lines"></i>
+      </button>
+    </div>
+    <!-- Name, Position -->
+    <div class="col-9">
+      <div class="row">
+        <span class="col-4" data-bind="text: position.name"></span>
+        <span class="col-8" data-bind="text: position.latLongString()"></span>
+      </div>
+    </div>
+    <!-- Delete button -->
+    <div class="col">
+      <button
+        type="button"
+        class="btn btn-sm shadow-none"
+        title="Delete position"
+        data-bind="click: function() { $root.deletePosition(position.id); }, clickBubble: false"
+      >
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
+    </div>
+  </li>
+</ul>

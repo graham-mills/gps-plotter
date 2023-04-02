@@ -105,7 +105,7 @@ body {
     border:none;
 }
 
-#map .waypoint-icon {
+#map .position-icon {
     position: absolute;
     border-radius: 50%;
     width:12px;
@@ -116,7 +116,7 @@ body {
     border: 2px solid white;
 }
 
-.waypoint-marker:hover .waypoint-icon, .waypoint-marker.selected .waypoint-icon {
+.position-marker:hover .position-icon, .position-marker.selected .position-icon {
     width:14px !important;
     height:14px !important;
     top:-7px !important;
@@ -124,7 +124,7 @@ body {
     padding: 0px !important;
 }
 
-#map .waypoint-label {
+#map .position-label {
     position: absolute;
     top:5px;
     left:5px;
@@ -133,7 +133,7 @@ body {
     white-space: nowrap;
 }
 
-.waypoint-marker:hover .waypoint-label, .waypoint-marker.selected .waypoint-label{
+.position-marker:hover .position-label, .position-marker.selected .position-label{
     font-weight: bold;
 }
 
@@ -165,11 +165,11 @@ body {
     list-style: none;
 }
 
-.waypoint-list {
+.position-list {
     padding-left:0;
 }
 
-.waypoint-row {
+.position-row {
     margin:0;
 }
 
@@ -187,11 +187,11 @@ body {
     font-size: 0%;
 }
 
-.waypoint-row.selected, .group-row.selected {
+.position-row.selected, .group-row.selected {
     background-color:cornflowerblue;
 }
 
-.waypoint-row:hover:not(.waypoint-row.selected), .group-row:hover:not(.group-row.selected) {
+.position-row:hover:not(.position-row.selected), .group-row:hover:not(.group-row.selected) {
     background-color: #eee;
 }
 
@@ -200,6 +200,6 @@ body {
     border-top: 1px solid gainsboro;
 }
 
-#waypoint-input {
+#position-input {
     min-height: 30vh;
 }

@@ -2,8 +2,8 @@ import { EventBus } from "../events";
 import * as ko from "knockout";
 import { AppConfig } from "../config";
 import { Model } from "../model/model";
-import { WaypointGroup } from "../model/waypoint_group";
-import { Waypoint } from "../model/waypoint";
+import { PositionGroup } from "../model/position_group";
+import { Position } from "../model/position";
 
 /** View Model for the HTML component `#export-form` */
 export class ExportForm {
@@ -34,12 +34,10 @@ export class ExportForm {
     // #endregion Knockout Bound Methods
 
     private handleModalOpened() {
-        let csv = "group, waypoint, latitude, longitude";
-        this.model.waypointGroups().forEach((group: WaypointGroup) => {
-            group.waypoints().forEach((waypoint: Waypoint) => {
-                csv += `\n${group.name()}, ${waypoint.name()}, ${waypoint
-                    .position()
-                    .latitude()}, ${waypoint.position().longitude()}`;
+        let csv = "group, position, latitude, longitude";
+        this.model.positionGroups().forEach((group: PositionGroup) => {
+            group.positions().forEach((position: Position) => {
+                csv += `\n${group.name()}, ${position.name()}, ${position.latitude()}, ${position.longitude()}`;
             });
         });
         this.exportText(csv);

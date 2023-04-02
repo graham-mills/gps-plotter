@@ -1,15 +1,15 @@
-import { Waypoint } from "./model/waypoint";
+import { Position } from "./model/position";
 
 export class ParseError {
     constructor(public message: string) {}
 }
 
-export function waypointsFromCsv(
+export function positionsFromCsv(
     text: string,
     userSpecifiedLatitudeColName: Optional<string> = null,
     userSpecifiedLongitudeColName: Optional<string> = null,
     filterSampleSize: Optional<number> = null
-): Array<Waypoint> {
+): Array<Position> {
     const lines = text.split("\n");
     const headerRow = lines[0];
     let latIndex = userSpecifiedLatitudeColName
@@ -27,20 +27,20 @@ export function waypointsFromCsv(
         lonIndex = 1;
     }
 
-    let waypoints: Array<Waypoint> = [];
+    let positions: Array<Position> = [];
     for (let i = dataRowStart; i < lines.length; ++i) {
         if (skipRow(i, dataRowStart, lines.length - 1, filterSampleSize)) {
             continue;
         }
-        const waypoint = parseLine(lines[i], i + 1, latIndex, lonIndex);
-        waypoints.push(waypoint);
+        const position = parseLine(lines[i], i + 1, latIndex, lonIndex);
+        positions.push(position);
     }
 
-    if (waypoints.length == 0) {
-        throw new ParseError("Failed to import waypoints");
+    if (positions.length == 0) {
+        throw new ParseError("Failed to import positions");
     }
 
-    return waypoints;
+    return positions;
 }
 
 function findHeaderIndexMandatory(columnName: string, headerLine: string): number {
@@ -75,7 +75,7 @@ function parseLine(
     lineNo: number,
     latitudeColIndex: number,
     longitudeColIndex: number
-): Waypoint {
+): Position {
     const cells = line.split(",");
 
     if (cells.length < 2) {
@@ -112,7 +112,7 @@ function parseLine(
             `Failed to parse longitude value (Line ${lineNo.toString()}, Column ${longitudeColIndex.toString()})\n - "${longitude_str}"`
         );
 
-    return Waypoint.fromDecimalDegrees(latitude, longitude);
+    return Position.fromDecimalDegrees(latitude, longitude);
 }
 
 function skipRow(
