@@ -13,14 +13,14 @@
     ></script>
     <style>
       #loading-screen {
-          width:100%;
-          height:50%;
-          position: absolute;
-          z-index: 10000;
-          text-align: center;
-          padding-top:50vh;
-          font-size: 2vmax;
-          background-color: white;
+        width: 100%;
+        height: 50%;
+        position: absolute;
+        z-index: 10000;
+        text-align: center;
+        padding-top: 50vh;
+        font-size: 2vmax;
+        background-color: white;
       }
     </style>
   </head>
@@ -171,8 +171,8 @@
                   <div class="col"></div>
                   <!-- Drag Handle -->
                   <div class="col">
-                    <button class="btn btn-sm handle" title="Re-order">
-                      <i class="fa-solid fa-grip-lines"></i>
+                    <button class="btn btn-sm" title="Re-order">
+                      <i class="fa-solid fa-grip-lines handle"></i>
                     </button>
                   </div>
                   <!-- Name, Position -->
@@ -225,7 +225,7 @@
                   </div>
                 </div>
                 <div class="input-group input-group-sm mb-2">
-                  <span class="input-group-text">Show Marker Labels</span>
+                  <span class="input-group-text">Show Labels</span>
                   <div class="form-control">
                     <input
                       type="checkbox"
@@ -302,12 +302,14 @@
             <!-- Lat/long number format -->
             <div class="modal-body">
               <div class="row mb-2">
-                <label class="col-sm-2 col-form-label col-form-label-sm"><b>Lat/Long Format</b></label>
+                <label class="col-sm-2 col-form-label col-form-label-sm"
+                  ><b>Latitude/Longitude Format</b></label
+                >
                 <div class="col-sm-10">
                   <select class="form-select">
                     <option value="1" selected>Decimal Degrees</option>
-                    <option value="2" disabled>Degrees, Minutes and Seconds</option>
-                    <option value="3" disabled>Degrees and Decimal Minutes</option>
+                    <option value="2" disabled>Degrees, Minutes and Seconds (Not yet supported)</option>
+                    <option value="3" disabled>Degrees and Decimal Minutes (Not yet supported)</option>
                   </select>
                 </div>
               </div>
@@ -316,17 +318,16 @@
                 <label class="col-sm-2 col-form-label col-form-label-sm"><b>Column Mapping</b></label>
                 <div class="col-sm-10">
                   <select class="form-select" data-bind="value: formData.columnMappingOption">
-                    <option value="1" selected>Default</option>
+                    <option value="1" selected>Auto</option>
                     <option value="2">Specify column names</option>
                   </select>
                   <p data-bind="visible: formData.columnMappingOption() == 1">
                     Coordinates will attempted to be read from the columns named
-                    <code>latitude</code> and <code>longitude</code>. If those columns are not found, the
-                    first two columns will be used.
+                    <code>latitude</code> and <code>longitude</code>. If those column headers are not
+                    found, the first two columns will be used.
                   </p>
                   <p data-bind="visible: formData.columnMappingOption() == 2">
-                    Coordinates will be read from the specified column names, other columns will be
-                    ignored.
+                    Coordinates will be read from the specified columns, other columns will be ignored.
                   </p>
                 </div>
               </div>
@@ -356,7 +357,25 @@
                   />
                 </div>
               </div>
-              <!-- CSV entry -->
+              <!-- CSV file select -->
+              <div class="row mb-2">
+                <label for="position-input" class="col-sm-2 col-form-label col-form-label-sm"
+                  ><b>File</b>
+                  <br />
+                  Read data from a file
+                </label>
+                <div class="col-sm-10">
+                  <div class="input-group mb-3">
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="position-input-file"
+                      data-bind="event: {change: selectedFileChanged}"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- CSV text -->
               <div class="row mb-2">
                 <label for="position-input" class="col-sm-2 col-form-label col-form-label-sm"
                   ><b>CSV Data</b></label
@@ -373,7 +392,7 @@
               </div>
               <!-- Select group -->
               <div class="row mb-2">
-                <label class="col-sm-2 col-form-label col-form-label-sm"><b>Group Option</b></label>
+                <label class="col-sm-2 col-form-label col-form-label-sm"><b>Group Option</b> </label>
                 <div class="col-sm-10">
                   <select class="form-select" data-bind="selectedOptions: formData.groupId">
                     <option value="0" selected>Add as a new group</option>
@@ -390,8 +409,10 @@
               <div class="row mb-2">
                 <label class="col-sm-2 col-form-label col-form-label-sm"
                   ><b>Enable Downsampling</b>
+                  <br />
+                  Import the first, last and every Nth row
                 </label>
-                <div class="col-sm-10">
+                <div class="col-sm-1">
                   <div class="form-check">
                     <input
                       class="form-check-input"
@@ -401,11 +422,8 @@
                     />
                   </div>
                 </div>
-              </div>
-              <div class="row mb-2" data-bind="visible: formData.enableDownsampling()">
-                <label class="col-sm-2 col-form-label col-form-label-sm"></label>
-                <div class="col-sm-10">
-                  Import the first, last and every
+                <div class="col-sm-9" data-bind="visible: formData.enableDownsampling()">
+                  Take every
                   <input
                     type="number"
                     class=""

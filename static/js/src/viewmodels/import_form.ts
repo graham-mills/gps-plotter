@@ -5,6 +5,7 @@ import { AppConfig } from "../config";
 import { Model } from "../model/model";
 import { positionsFromCsv, ParseError } from "../csv_parse";
 import * as bootstrap from "bootstrap";
+import { read } from "fs";
 
 enum MappingOption {
     DefaultColumnMapping = 1,
@@ -59,11 +60,14 @@ export class ImportForm {
     eventBus: EventBus;
     model: Model;
     formData: FormData;
+    fileReader: FileReader;
 
     constructor(eventBus: EventBus, model: Model) {
         this.formData = new FormData();
         this.model = model;
         this.eventBus = eventBus;
+        this.fileReader = new FileReader();
+        this.fileReader.onload = this.onFileLoaded.bind(this);
         ko.applyBindings(
             this,
             document.getElementById(AppConfig.DOMSymbols.ImportModal)
@@ -149,5 +153,23 @@ export class ImportForm {
 
     private reset() {
         this.formData.errorMessages.removeAll();
+    }
+
+    private selectedFileChanged(_: HTMLElement, event: Event) {
+        if (!event.target) {
+            return;
+        }
+
+        const inputElement = event.target as HTMLInputElement;
+        if (!inputElement.files || inputElement.files.length <= 0) {
+            return;
+        }
+
+        this.fileReader.readAsText(inputElement.files[0]);
+    }
+
+    private onFileLoaded() {
+        if (!this.fileReader.result) return;
+        this.formData.importText(this.fileReader.result as string);
     }
 }

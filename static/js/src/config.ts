@@ -10,6 +10,7 @@ class DOMSymbols {
     Controls = "controls";
     EditGroupForm = "edit-group-form";
     EditPositionForm = "edit-position-form";
+    ImportFormFileSelect = "position-input-long-col-name";
     ImportModal = "import-modal";
     LoadingScreen = "loading-screen";
     Map = "map";

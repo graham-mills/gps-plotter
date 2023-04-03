@@ -32,6 +32,11 @@ export function positionsFromCsv(
         if (skipRow(i, dataRowStart, lines.length - 1, filterSampleSize)) {
             continue;
         }
+
+        if (lines[i].length == 0) {
+            continue;
+        }
+
         const position = parseLine(lines[i], i + 1, latIndex, lonIndex);
         positions.push(position);
     }
@@ -47,7 +52,7 @@ function findHeaderIndexMandatory(columnName: string, headerLine: string): numbe
     const index = findHeaderIndex(columnName, headerLine);
     if (index == null) {
         throw new ParseError(
-            `Line 1 does not contain the column "${columnName!}\n - "${headerLine}"`
+            `Line 1 does not contain the column "${columnName!}"\n\n - "${headerLine}"`
         );
     }
     return index;
