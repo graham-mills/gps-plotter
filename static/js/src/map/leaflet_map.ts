@@ -23,7 +23,7 @@ export class LeafletMap implements MapInterface {
         this.map = L.map(AppConfig.DOMSymbols.Map, {
             attributionControl: false,
         }).setView([56.0705, -2.748201], 13);
-        this.initMap();
+        this.addTileLayersToMap();
     }
     //#region public methods
     addPosition(position: Position): void {
@@ -132,8 +132,8 @@ export class LeafletMap implements MapInterface {
         return [center.lat, center.lng];
     }
     //#endregion
-    private initMap() {
-        L.tileLayer(
+    private addTileLayersToMap() {
+        const Mapbox = L.tileLayer(
             "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
             {
                 attribution: "",
@@ -144,7 +144,38 @@ export class LeafletMap implements MapInterface {
                 accessToken:
                     "pk.eyJ1IjoiZ21pbGxzIiwiYSI6ImNsMDQweXYzNTBkMXkzcXBkaXFwZW5wYXgifQ.YzuUFNKB7DwY9G9bQ4oVmg",
             }
-        ).addTo(this.map);
+        );
+        const OpenStreetMap_Mapnik = L.tileLayer(
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                maxZoom: AppConfig.Map.MaxZoomLevel,
+                attribution: "© OpenStreetMap",
+            }
+        );
+        const Stadia_OSMBright = L.tileLayer(
+            "https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png",
+            {
+                maxZoom: AppConfig.Map.MaxZoomLevel,
+                attribution:
+                    '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            }
+        );
+        const Esri_WorldImagery = L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            {
+                attribution:
+                    "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+            }
+        );
+        const baseMaps = {
+            OpenStreetMap: OpenStreetMap_Mapnik,
+            Mapbox: Mapbox,
+            "Stadia.OSMBright": Stadia_OSMBright,
+            "Esri.WorldImagery": Esri_WorldImagery,
+        };
+
+        Stadia_OSMBright.addTo(this.map);
+        const layerControl = L.control.layers(baseMaps).addTo(this.map);
     }
     private lookupMarker(positionId: number): Optional<L.Marker> {
         const marker = this.markers.get(positionId);
