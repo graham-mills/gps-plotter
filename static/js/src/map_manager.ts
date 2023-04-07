@@ -106,7 +106,9 @@ export class MapManager {
     /** Updates all map markers and the polyline for the updated group */
     private handlePositionGroupUpdated(event: PositionGroupUpdatedEvent) {
         this.map.removePositionGroup(event.positionGroup);
-        this.map.addPositionGroup(event.positionGroup);
+        if (event.positionGroup.visible()) {
+            this.map.addPositionGroup(event.positionGroup);
+        }
     }
 
     /** Pans to the group and redraws a thicker polyline */
@@ -125,7 +127,7 @@ export class MapManager {
         this.map.addPositionGroup(event.positionGroup);
     }
 
-    /** Remove position group  map */
+    /** Remove position group from map */
     private handleHidePositionGroup(event: HidePositionGroupEvent) {
         this.map.removePositionGroup(event.positionGroup);
     }
