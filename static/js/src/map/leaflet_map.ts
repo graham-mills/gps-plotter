@@ -152,14 +152,6 @@ export class LeafletMap implements MapInterface {
                 attribution: "© OpenStreetMap",
             }
         );
-        const Stadia_OSMBright = L.tileLayer(
-            "https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png",
-            {
-                maxZoom: AppConfig.Map.MaxZoomLevel,
-                attribution:
-                    '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-            }
-        );
         const Esri_WorldImagery = L.tileLayer(
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
             {
@@ -170,11 +162,10 @@ export class LeafletMap implements MapInterface {
         const baseMaps = {
             OpenStreetMap: OpenStreetMap_Mapnik,
             Mapbox: Mapbox,
-            "Stadia.OSMBright": Stadia_OSMBright,
             "Esri.WorldImagery": Esri_WorldImagery,
         };
 
-        Stadia_OSMBright.addTo(this.map);
+        Mapbox.addTo(this.map);
         const layerControl = L.control.layers(baseMaps).addTo(this.map);
     }
     private lookupMarker(positionId: number): Optional<L.Marker> {
