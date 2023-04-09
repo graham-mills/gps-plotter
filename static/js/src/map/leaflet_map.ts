@@ -37,9 +37,9 @@ export class LeafletMap implements MapInterface {
             this.addPositionMarker(position, group);
         }
 
-        let polyline = this.lookupPolyline(group.id);
-        polyline?.addLatLng(this.latLngFromPosition(position));
-        polyline?.redraw();
+        if (group.drawPolyline()) {
+            this.redrawPolyline(group);
+        }
     }
     addPositionGroup(group: PositionGroup): void {
         if (this.layerGroups.has(group.id)) {
@@ -206,6 +206,10 @@ export class LeafletMap implements MapInterface {
         }
         polyline.setLatLngs(latLngs);
         return polyline;
+    }
+    private redrawPolyline(group: PositionGroup) {
+        this.removePositionGroupPolyline(group.id);
+        this.addPositionGroupPolyline(group);
     }
     private addPositionMarker(position: Position, group: PositionGroup): L.Marker {
         const marker = L.marker(this.latLngFromPosition(position), {
