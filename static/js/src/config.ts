@@ -31,12 +31,13 @@ class ModelConfig {
 }
 
 class MapConfig {
-    MaxZoomLevel = 22;
+    DefaultPolylineWidth = 2;
     DefaultZoomLevel = 10;
     MapMarkerClass = "position-marker";
-    SelectedMapMarkerClass = "position-marker selected";
     MapMarkerIdPrefix = "marker-";
-    DefaultPolylineWidth = 2;
+    MapMarkerRadius = 5;
+    MaxZoomLevel = 22;
+    SelectedMapMarkerClass = "position-marker selected";
     SelectedPolylineWidth = 3;
 }
 

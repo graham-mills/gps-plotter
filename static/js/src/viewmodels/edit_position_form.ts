@@ -16,6 +16,8 @@ export class EditPositionForm {
     latitude: ko.Observable<number> = ko.observable(0.0);
     longitude: ko.Observable<number> = ko.observable(0.0);
     source: Optional<Position> = null;
+    showMapMarker: ko.Observable<boolean> = ko.observable(true);
+    showMapMarkerLabel: ko.Observable<boolean> = ko.observable(true);
     showForm: ko.Observable<boolean> = ko.observable(Boolean(false));
 
     constructor(eventBus: EventBus) {
@@ -50,6 +52,8 @@ export class EditPositionForm {
         this.name(position.name());
         this.latitude(position.latitude());
         this.longitude(position.longitude());
+        this.showMapMarker(position.showMapMarker());
+        this.showMapMarkerLabel(position.showMapMarkerLabel());
     }
 
     /** Reverts any changes to form data since the position was selected */
@@ -66,6 +70,8 @@ export class EditPositionForm {
         updatedPosition.name(this.name());
         updatedPosition.latitude(Number(this.latitude()));
         updatedPosition.longitude(Number(this.longitude()));
+        updatedPosition.showMapMarker(this.showMapMarker());
+        updatedPosition.showMapMarkerLabel(this.showMapMarkerLabel());
         this.eventBus.publish(new UpdatePositionEvent(updatedPosition));
     }
 }

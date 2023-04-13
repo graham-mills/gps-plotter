@@ -17,22 +17,6 @@
           <input type="checkbox" class="form-check-input" data-bind="checked: $root.drawPolyline" />
         </div>
       </div>
-      <div class="input-group input-group-sm mb-2">
-        <span class="input-group-text">Show Markers</span>
-        <div class="form-control">
-          <input type="checkbox" class="form-check-input" data-bind="checked: $root.showMarkers" />
-        </div>
-      </div>
-      <div class="input-group input-group-sm mb-2">
-        <span class="input-group-text">Show Labels</span>
-        <div class="form-control">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            data-bind="checked: $root.showMarkerLabels, enable: $root.showMarkers"
-          />
-        </div>
-      </div>
       <div class="input-group input-group-sm mb-3">
         <label class="input-group-text">Polyline Color</label>
         <input
@@ -50,6 +34,40 @@
         <button type="submit" class="btn btn-sm btn-secondary" data-bind="click: $root.resetForm">
           Reset
         </button>
+      </div>
+    </div>
+  </div>
+  <div class="edit-form row mb-1">
+    <div class="col mt-2">
+      <div class="mb-2">
+        Toggle all map markers
+        <div class="btn-group btn-group-sm" role="group">
+          <label
+            class="btn btn-outline-primary"
+            data-bind="clickBubble: false, click: function() { $root.showMarkers(true) }, css: { active: $root.showMarkers()}"
+            >On</label
+          >
+          <label
+            class="btn btn-outline-primary"
+            data-bind="clickBubble: false, click: function() { $root.showMarkers(false) }, css: { active: !$root.showMarkers()}"
+            >Off</label
+          >
+        </div>
+      </div>
+      <div class="mb-2">
+        <div class="btn-group btn-group-sm" role="group">
+          Toggle all map marker labels
+          <label
+            class="btn btn-outline-primary"
+            data-bind="clickBubble: false, click: function() { $root.showMarkerLabels(true) }, css: { active: $root.showMarkerLabels()}"
+            >On</label
+          >
+          <label
+            class="btn btn-outline-primary"
+            data-bind="clickBubble: false, click: function() { $root.showMarkerLabels(false) }, css: { active: !$root.showMarkerLabels()}"
+            >Off</label
+          >
+        </div>
       </div>
     </div>
   </div>

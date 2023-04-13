@@ -11,6 +11,8 @@ export class Position {
     public selected: ko.Observable<boolean>;
     public latitude: ko.Observable<number>;
     public longitude: ko.Observable<number>;
+    public showMapMarker: ko.Observable<boolean>;
+    public showMapMarkerLabel: ko.Observable<boolean>;
 
     constructor(id: number, latitude: number, longitude: number) {
         this.id = id;
@@ -20,6 +22,8 @@ export class Position {
         this.latitude = ko.observable(latitude);
         this.longitude = ko.observable(longitude);
         this.selected = ko.observable(Boolean(false));
+        this.showMapMarker = ko.observable(Boolean(true));
+        this.showMapMarkerLabel = ko.observable(Boolean(true));
     }
     toString(): string {
         return this.name() + ", " + this.latLongString();

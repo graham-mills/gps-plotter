@@ -15,6 +15,26 @@
         <span class="input-group-text">Latitude</span>
         <input type="text" class="form-control" data-bind="value: $root.latitude" />
       </div>
+      <div class="input-group input-group-sm mb-2">
+        <span class="input-group-text">Show Map Marker</span>
+        <div class="form-control">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            data-bind="checked: $root.showMapMarker"
+          />
+        </div>
+      </div>
+      <div class="input-group input-group-sm mb-2">
+        <span class="input-group-text">Show Map Marker Label</span>
+        <div class="form-control">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            data-bind="checked: $root.showMapMarkerLabel, enable: $root.showMapMarker"
+          />
+        </div>
+      </div>
       <div class="input-group input-group-sm mb-3">
         <span class="input-group-text">Longitude</span>
         <input type="text" class="form-control" data-bind="value: $root.longitude" />

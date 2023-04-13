@@ -10,18 +10,18 @@ export class LeafletMap implements MapInterface {
     eventBus: EventBus;
     model: Model;
     map: L.Map;
-    markers: Map<number, L.Marker>; // Maps PositionId => Marker
+    markers: Map<number, L.CircleMarker>; // Maps PositionId => Marker
     layerGroups: Map<number, L.FeatureGroup>; // Maps PositionGroupId => LayerGroup
     lines: Map<number, L.Polyline>; // Maps PositionGroupId => Polyline
 
     constructor(eventBus: EventBus, model: Model) {
         this.eventBus = eventBus;
         this.model = model;
-        this.markers = new Map<number, L.Marker>();
+        this.markers = new Map<number, L.CircleMarker>();
         this.layerGroups = new Map<number, L.FeatureGroup>();
         this.lines = new Map<number, L.Polyline>();
         this.map = L.map(AppConfig.DOMSymbols.Map, {
-            attributionControl: false,
+            attributionControl: true,
         }).setView([56.0705, -2.748201], 13);
         this.addTileLayersToMap();
     }
@@ -33,7 +33,7 @@ export class LeafletMap implements MapInterface {
         }
 
         const group = position.group!;
-        if (group.showMarkers()) {
+        if (position.showMapMarker()) {
             this.addPositionMarker(position, group);
         }
 
@@ -48,8 +48,8 @@ export class LeafletMap implements MapInterface {
         }
 
         this.addPositionLayerGroup(group);
-        if (group.showMarkers()) {
-            for (const position of group.positions()) {
+        for (const position of group.positions()) {
+            if (position.showMapMarker()) {
                 this.addPositionMarker(position, group);
             }
         }
@@ -78,12 +78,14 @@ export class LeafletMap implements MapInterface {
     focusOnPosition(position: Position) {
         const positionMarker = this.lookupMarker(position.id);
 
-        if (!positionMarker) return;
+        const latLng = positionMarker
+            ? positionMarker.getLatLng()
+            : L.latLng(position.latitude(), position.longitude());
         let requestZoom = this.map.getZoom();
         if (requestZoom < AppConfig.Map.DefaultZoomLevel) {
             requestZoom = AppConfig.Map.DefaultZoomLevel;
         }
-        this.map.setView(positionMarker.getLatLng(), requestZoom);
+        this.map.setView(latLng, requestZoom);
     }
     focusOnPositionGroup(group: PositionGroup) {
         if (group.positions.length == 0) return;
@@ -92,22 +94,14 @@ export class LeafletMap implements MapInterface {
         this.map.fitBounds(polyline.getBounds());
     }
     positionSelected(position: Position): void {
-        // Add the selected class to the map marker div
-        const positionMapMarkerDiv = document.getElementById(
-            "marker-" + position.id.toString()
-        );
-        if (positionMapMarkerDiv) {
-            positionMapMarkerDiv.className = AppConfig.Map.SelectedMapMarkerClass;
-        }
+        let marker = this.markers.get(position.id);
+        if (!marker) return;
+        this.addMarkerTooltip(marker, position);
     }
     positionDeselected(position: Position): void {
-        // Remove the selected class from the map marker div
-        const positionMapMarker = document.getElementById(
-            "marker-" + position.id.toString()
-        );
-        if (positionMapMarker) {
-            positionMapMarker.className = AppConfig.Map.MapMarkerClass;
-        }
+        let marker = this.markers.get(position.id);
+        if (!marker) return;
+        this.addMarkerTooltip(marker, position);
     }
     positionGroupSelected(group: PositionGroup): void {
         const polyline = this.lookupPolyline(group.id);
@@ -133,10 +127,10 @@ export class LeafletMap implements MapInterface {
     }
     //#endregion
     private addTileLayersToMap() {
-        const Mapbox = L.tileLayer(
+        const MapboxStreets = L.tileLayer(
             "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
             {
-                attribution: "",
+                attribution: `© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
                 maxZoom: AppConfig.Map.MaxZoomLevel,
                 id: "mapbox/streets-v11",
                 tileSize: 512,
@@ -152,7 +146,7 @@ export class LeafletMap implements MapInterface {
                 attribution: "© OpenStreetMap",
             }
         );
-        const Esri_WorldImagery = L.tileLayer(
+        const EsriWorldImagery = L.tileLayer(
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
             {
                 attribution:
@@ -161,14 +155,14 @@ export class LeafletMap implements MapInterface {
         );
         const baseMaps = {
             OpenStreetMap: OpenStreetMap_Mapnik,
-            Mapbox: Mapbox,
-            "Esri.WorldImagery": Esri_WorldImagery,
+            MapboxStreets: MapboxStreets,
+            EsriWorldImagery: EsriWorldImagery,
         };
 
-        Mapbox.addTo(this.map);
+        MapboxStreets.addTo(this.map);
         const layerControl = L.control.layers(baseMaps).addTo(this.map);
     }
-    private lookupMarker(positionId: number): Optional<L.Marker> {
+    private lookupMarker(positionId: number): Optional<L.CircleMarker> {
         const marker = this.markers.get(positionId);
         if (!marker) {
             return null;
@@ -211,15 +205,43 @@ export class LeafletMap implements MapInterface {
         this.removePositionGroupPolyline(group.id);
         this.addPositionGroupPolyline(group);
     }
-    private addPositionMarker(position: Position, group: PositionGroup): L.Marker {
-        const marker = L.marker(this.latLngFromPosition(position), {
-            title: position.name(),
-            icon: this.markerIconForPosition(position, group),
+    private addPositionMarker(
+        position: Position,
+        group: PositionGroup
+    ): L.CircleMarker {
+        const marker = L.circleMarker(
+            L.latLng(position.latitude(), position.longitude()),
+            {
+                radius: AppConfig.Map.MapMarkerRadius,
+                color: position.group!.lineColor(),
+                fillOpacity: 0.5,
+                opacity: 1.0,
+            }
+        );
+        let that = this;
+        marker.addEventListener("click", (_) => {
+            that.positionMarkerClicked(position.id);
         });
+        this.addMarkerTooltip(marker, position);
         this.lookupLayerGroup(group.id)!.addLayer(marker);
         this.markers.set(position.id, marker);
-        this.addPositionMarkerClickHandler(position);
         return marker;
+    }
+    private addMarkerTooltip(marker: L.CircleMarker, position: Position) {
+        marker.unbindTooltip();
+        marker.bindTooltip(position.name(), {
+            className: position.selected()
+                ? AppConfig.Map.SelectedMapMarkerClass
+                : AppConfig.Map.MapMarkerClass,
+            interactive: true,
+            direction: "right",
+            offset: L.point(5, 0),
+            permanent: position.selected() || position.showMapMarkerLabel(),
+        });
+        let that = this;
+        marker.getTooltip()!.addEventListener("click", (_) => {
+            that.positionMarkerClicked(position.id);
+        });
     }
     private addPositionLayerGroup(positionGroup: PositionGroup): L.LayerGroup {
         const layerGroup = new L.FeatureGroup([], {}).addTo(this.map);
@@ -241,28 +263,6 @@ export class LeafletMap implements MapInterface {
     }
     private latLngFromPosition(position: Position): L.LatLngExpression {
         return [position.latitude(), position.longitude()];
-    }
-    private divIdFromPosition(position: Position): string {
-        return "marker-" + position.id.toString();
-    }
-    private markerIconForPosition(position: Position, group: PositionGroup) {
-        let markerHtml = `<div id="${
-            AppConfig.Map.MapMarkerIdPrefix + position.id.toString()
-        }" class="${AppConfig.Map.MapMarkerClass}">`;
-        markerHtml += `<div class="position-icon" style="background-color: ${group.lineColor()}"></div>`;
-        if (group.showMarkerLabels()) {
-            markerHtml += `<div class="position-label">${position.name()}</div>`;
-        }
-        markerHtml += `</div>`;
-        return L.divIcon({ html: markerHtml });
-    }
-    private addPositionMarkerClickHandler(position: Position) {
-        let that = this;
-        document
-            .getElementById(this.divIdFromPosition(position))
-            ?.addEventListener("click", function (event: MouseEvent) {
-                that.positionMarkerClicked(position.id);
-            });
     }
     private positionMarkerClicked(positionId: number) {
         this.eventBus.publish(

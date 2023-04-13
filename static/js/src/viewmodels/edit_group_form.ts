@@ -30,6 +30,9 @@ export class EditPositionGroupForm {
             this.handlePositionGroupDeselected.bind(this)
         );
 
+        this.showMarkers.subscribe(this.showMarkersChanged.bind(this));
+        this.showMarkerLabels.subscribe(this.showMarkerLabelsChanged.bind(this));
+
         ko.applyBindings(
             this,
             document.getElementById(AppConfig.DOMSymbols.EditGroupForm)
@@ -69,5 +72,26 @@ export class EditPositionGroupForm {
         updatedGroup.showMarkerLabels(this.showMarkerLabels());
         updatedGroup.lineColor(this.lineColor());
         this.eventBus.publish(new UpdatePositionGroupEvent(updatedGroup));
+    }
+
+    private showMarkersChanged(): void {
+        if (!this.source) return;
+        if (this.showMarkers() == this.source.showMarkers()) return;
+
+        this.source.showMarkers(this.showMarkers());
+        this.source.positions().forEach((pos) => {
+            pos.showMapMarker(this.showMarkers());
+        });
+        this.eventBus.publish(new UpdatePositionGroupEvent(this.source));
+    }
+    private showMarkerLabelsChanged(): void {
+        if (!this.source) return;
+        if (this.showMarkerLabels() == this.source.showMarkerLabels()) return;
+
+        this.source.showMarkerLabels(this.showMarkerLabels());
+        this.source.positions().forEach((pos) => {
+            pos.showMapMarkerLabel(this.showMarkerLabels());
+        });
+        this.eventBus.publish(new UpdatePositionGroupEvent(this.source));
     }
 }

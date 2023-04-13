@@ -86,47 +86,26 @@ body {
     border:1px solid grey;
 }
 
-#map .leaflet-div-icon {
-    height: fit-content !important;
-    width: fit-content !important;
-    margin: 0 !important;
-    background: none;
+/* leafletjs overrides */
+
+.leaflet-tooltip {
+    background:none;
     border:none;
-}
-
-#map .position-icon {
-    position: absolute;
-    border-radius: 50%;
-    width:12px;
-    height:12px;
-    top:-6px;
-    left:-6px;
-    padding:2px;
-    border: 2px solid white;
-}
-
-.position-marker:hover .position-icon, .position-marker.selected .position-icon {
-    width:14px !important;
-    height:14px !important;
-    top:-7px !important;
-    left:-7px !important;
-    padding: 0px !important;
-}
-
-#map .position-label {
-    position: absolute;
-    top:5px;
-    left:5px;
-    color: black;
-    font-weight: bold;
+    box-shadow:none;
     text-shadow: 0px 0px 4px white;
-    white-space: nowrap;
 }
 
-.position-marker:hover .position-label, .position-marker.selected .position-label{
+.leaflet-tooltip::before {
+    border: none;
+}
+
+.leaflet-tooltip.selected, .leaflet-tooltip:hover {
     font-weight: bold;
 }
 
+a.leaflet-control-layers-toggle {
+    background-image: url(/static/img/leafletjs-layers.png);
+}
 
 /* </map> */
 
