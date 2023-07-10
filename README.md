@@ -10,4 +10,4 @@ Built primarily using:
 * [Bootstrap](https://getbootstrap.com/) and [FontAwesome](https://fontawesome.com/) for the CSS
 * [Browserify](https://browserify.org/) for web bundling
 
-Deployed as a GitHub page [here](https://graham-mills.github.io/gps-plotter/).
+Deployed as a GitHub page [here](https://grhmdev.github.io/gps-plotter/).
