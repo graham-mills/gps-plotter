@@ -1,0 +1,106 @@
+:root {
+    --map-height: 50vw;
+    --row-pad: 10px;
+    --color-side-menu: #dcdcdc;
+    --color-side-menu-panel-bg: #fff;
+    --color-list-item-bg-hovered: #eee;
+    --color-list-item-bg-selected: #6495ed;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fff;
+}
+
+ul {
+    margin: 0;
+}
+
+#root {
+    height: 100vh;
+}
+
+/* xs */
+@media screen and (min-width: 0px) {
+    .resp-margin {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+    .resp-padding {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+}
+
+/* s */
+@media screen and (min-width: 576px) {
+    .resp-margin {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+    .resp-padding {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+}
+
+/* m */
+@media screen and (min-width: 768px) {
+    .resp-margin {
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+    .resp-padding {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+/* l */
+@media screen and (min-width: 992px) {
+}
+
+/* xl */
+@media screen and (min-width: 1200px) {
+}
+
+/* xxl */
+@media screen and (min-width: 1400px) {
+}
+
+.inline-icon {
+    padding: 0 0.33rem;
+    display: inline-block;
+}
+
+/* temp*/
+
+/* #root {
+    height:100vh;
+}
+
+#root > .container-fluid {
+    height:100%;
+    display:flex;
+    flex-flow: column wrap;
+}
+
+.nav {
+
+}
+
+.page {
+    flex-grow: 1;
+}
+
+.map {
+
+}
+
+.sidebar {
+ 
+} */

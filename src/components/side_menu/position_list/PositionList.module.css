@@ -1,0 +1,9 @@
+.position-list {
+    padding: 0;
+}
+
+.ghost {
+    background-color: lightgrey;
+    opacity: 0.5;
+    font-size: 0%;
+}

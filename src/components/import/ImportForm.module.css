@@ -1,0 +1,21 @@
+.import-form {
+    margin: var(--row-pad) auto;
+}
+
+.import-form__downsampling-input {
+    width: 4rem;
+}
+
+/* xl */
+@media screen and (min-width: 1200px) {
+    .import-form {
+        width: 100%;
+    }
+}
+
+/* xxl */
+@media screen and (min-width: 1400px) {
+    .import-form {
+        width: 60%;
+    }
+}

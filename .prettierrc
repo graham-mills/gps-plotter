@@ -3,14 +3,5 @@
     "tabWidth": 4,
     "semi": true,
     "singleQuote": false,
-    "printWidth": 88,
-    "overrides": [
-        {
-            "files": ["*.html"],
-            "options": {
-                "tabWidth": 2,
-                "printWidth": 100
-            }
-        }
-    ]
+    "printWidth": 88
 }

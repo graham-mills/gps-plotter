@@ -1,0 +1,11 @@
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.page-wrapper {
+    flex-grow: 1;
+    flex-basis: 0;
+    overflow-y: auto;
+}

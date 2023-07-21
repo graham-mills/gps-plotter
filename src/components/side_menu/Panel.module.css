@@ -1,0 +1,4 @@
+.panel {
+    background-color: var(--color-side-menu-panel-bg);
+    margin-bottom: var(--row-pad);
+}

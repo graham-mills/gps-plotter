@@ -1,0 +1,20 @@
+.position-marker-label {
+    background: none;
+    padding: 3px;
+    border: none;
+    box-shadow: none;
+    font-size: 0.9rem;
+    text-shadow:
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+}
+
+.position-marker-label::before {
+    border: none;
+}
+
+.position-marker-label.selected {
+    font-weight: bold;
+}

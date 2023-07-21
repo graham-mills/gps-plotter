@@ -1,0 +1,13 @@
+.group-row {
+    border-left: 4px;
+    border-left-style: solid;
+    border-top: 1px solid var(--color-side-menu);
+}
+
+.group-row.selected {
+    background-color: var(--color-list-item-bg-selected);
+}
+
+.group-row:hover:not(.group-row.selected) {
+    background-color: var(--color-list-item-bg-hovered);
+}
