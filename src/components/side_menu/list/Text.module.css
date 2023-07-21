@@ -1,0 +1,9 @@
+.text-wrapper {
+    display: table;
+    height: 100%;
+}
+
+.text {
+    display: table-cell;
+    vertical-align: middle;
+}

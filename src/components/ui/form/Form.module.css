@@ -1,0 +1,7 @@
+.form-button-group {
+    text-align: center;
+}
+
+.form-row {
+    border-bottom: 1px solid var(--color-side-menu);
+}

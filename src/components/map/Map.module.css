@@ -1,0 +1,11 @@
+.map {
+    min-height: 100%;
+    height: var(--map-height);
+}
+
+/* xl */
+@media screen and (min-width: 1400px) {
+    .map {
+        height: 100%;
+    }
+}

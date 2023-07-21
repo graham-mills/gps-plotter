@@ -1,0 +1,11 @@
+.side-menu {
+    background-color: var(--color-side-menu);
+    padding-top: var(--row-pad);
+}
+
+/* xxl */
+@media screen and (min-width: 1400px) {
+    .side-menu {
+        height: 100%;
+    }
+}

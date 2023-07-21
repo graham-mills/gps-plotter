@@ -1,0 +1,17 @@
+.export-form {
+    margin: var(--row-pad) auto;
+}
+
+/* xl */
+@media screen and (min-width: 1200px) {
+    .export-form {
+        width: 100%;
+    }
+}
+
+/* xxl */
+@media screen and (min-width: 1400px) {
+    .export-form {
+        width: 60%;
+    }
+}

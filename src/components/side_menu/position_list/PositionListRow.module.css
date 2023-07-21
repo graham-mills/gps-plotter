@@ -1,0 +1,16 @@
+.position-row {
+    margin: 0;
+    padding-left: 4px;
+}
+
+.selected {
+    background-color: var(--color-list-item-bg-selected);
+}
+
+.position-row:hover:not(.selected) {
+    background-color: var(--color-list-item-bg-hovered);
+}
+
+.handle {
+    cursor: grab;
+}

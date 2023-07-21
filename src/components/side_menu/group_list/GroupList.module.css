@@ -1,0 +1,11 @@
+.group-list {
+    height: fit-content;
+    max-height: 28vw;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    /* Position does not impact layout but ensures offsetParent is set to this element.
+       This is used by the JS for scrolling to the selected list elements (offsetTop is
+       the offset from this element).
+    */
+    position: relative;
+}

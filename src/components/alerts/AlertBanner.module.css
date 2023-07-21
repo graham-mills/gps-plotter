@@ -1,0 +1,13 @@
+.alert-banner {
+    width: 100%;
+    bottom: 0;
+    pointer-events: all;
+}
+
+.fadeout {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        visibility 0s 0.5s,
+        opacity 0.5s linear;
+}
